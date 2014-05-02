@@ -123,11 +123,11 @@ private:
 
 private:
     void ftpCheckDisconnect();
-    void ftpDownloadFile(const QUrl &url, QString filename );
+    void ftpDownloadFile(const QUrl & /* TODO url */, QString filename );
 
 private slots:
     void ftpCancelDownload();
-    void ftpCommandFinished(int commandId, bool error);
+    void ftpCommandFinished(int /* TODO commandId */, bool error);
     void ftpAddToList(const QUrlInfo &urlInfo);
     void ftpUpdateDataTransferProgress(qint64 readBytes, qint64 totalBytes);
 };

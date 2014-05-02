@@ -727,7 +727,7 @@ void SettingsDialog::warnLangChange(int)
     QMessageBox::information(this, "QtWeb", tr("The new language will be applied after QtWeb restarts"));
 }
 
-void SettingsDialog::setAppStyle(int index)
+void SettingsDialog::setAppStyle(int /* index */ )
 {
     QString style = comboBoxStyle->currentText();
     QApplication::setStyle(QStyleFactory::create(style));
@@ -869,7 +869,12 @@ void SettingsDialog::removeBlockAdEx()
 void SettingsDialog::addBlockItems(const QLatin1String& filename, QListWidget* listview)
 {
     QFile file(filename);
-    bool isOpened = file.open(QIODevice::ReadOnly | QIODevice::Text);
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QMessageBox::warning(this, tr("Error"),
+            tr("Can't open file for adding blocked item. Error code is: ") + QString::number(file.error()));
+        return;
+    }
     QString all = QString(QLatin1String(file.readAll()));
     file.close();
     QStringList lst = all.split("\n");

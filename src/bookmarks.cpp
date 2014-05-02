@@ -1257,7 +1257,7 @@ void BookmarksToolBar::build()
     }
 }
 
-void BookmarksToolBar::deleteBookmark(const QUrl &url, const QString &title)
+void BookmarksToolBar::deleteBookmark(const QUrl & /* TODO need restore variable? url*/, const QString &title)
 {
     for (int i = 0; i < m_bookmarksModel->rowCount(m_root); ++i) 
     {
@@ -1276,7 +1276,7 @@ void BookmarksToolBar::deleteBookmark(const QUrl &url, const QString &title)
     }
 }
 
-void BookmarksToolBar::renameBookmark(const QUrl &url, const QString &title, const QString &new_title)
+void BookmarksToolBar::renameBookmark(const QUrl &/* TODO need restore variable? url*/, const QString &title, const QString &new_title)
 {
     for (int i = 0; i < m_bookmarksModel->rowCount(m_root); ++i) 
     {
@@ -1376,7 +1376,7 @@ void BookmarkToolButton::mouseMoveEvent(QMouseEvent *event)
      mimeData->setProperty( "move", QVariant(true));
      drag->setMimeData(mimeData);
 
-    Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
+    drag->exec(Qt::CopyAction | Qt::MoveAction);
     QToolButton::mousePressEvent(event);
 }
 
@@ -1402,7 +1402,7 @@ QUrl BookmarkToolButton::url() const
     return m_url;
 }
 
-void BookmarkToolButton::contextMenuRequested(const QPoint &pt)
+void BookmarkToolButton::contextMenuRequested(const QPoint & )
 {
     QMenu menu;
     menu.addAction(tr("Open"), this, SLOT(openBookmark()));

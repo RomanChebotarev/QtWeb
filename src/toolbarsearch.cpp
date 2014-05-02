@@ -368,7 +368,7 @@ void ToolbarSearch::addSearches()
         settings.endGroup();
     }
 
-    QAction* searches = m->addAction(tr("Add..."), this, SLOT(addSearch()));
+    /* TODO ? QAction* searches = */ m->addAction(tr("Add..."), this, SLOT(addSearch()));
  }
 
 void ToolbarSearch::addSearch()

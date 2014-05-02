@@ -87,9 +87,9 @@ QString DefaultDownloadPath(bool create_dir)
 DownloadItem::DownloadItem(QNetworkReply *reply, bool requestFileName, QWidget *parent)
     : QWidget(parent)
     , m_reply(reply)
+    , m_to_delete(false)
     , m_requestFileName(requestFileName)
     , m_bytesReceived(0)
-    , m_to_delete(false)
     , m_finished(false)
 {
     setupUi(this);
@@ -244,7 +244,7 @@ void DownloadItem::stop()
     deleteButton->setVisible(true);
 }
 
-void DownloadItem::mouseDoubleClickEvent ( QMouseEvent * event )
+void DownloadItem::mouseDoubleClickEvent ( QMouseEvent * /* event */ )
 {
     open();
 }
@@ -500,7 +500,7 @@ DownloadManager::~DownloadManager()
         delete m_iconProvider;
 }
 
-void DownloadManager::openItem(const QModelIndex& index)
+void DownloadManager::openItem(const QModelIndex& /* index */)
 {
 }
 

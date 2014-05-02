@@ -70,10 +70,10 @@
 WebView::WebView(QWidget* parent)   
     : QWebView(parent)
     , m_progress(0)
-    , m_page(new WebPage(this))
-    , m_font_resizing(false)
     , m_is_loading(false)
     , m_gestureStarted(false)
+    , m_page(new WebPage(this))
+    , m_font_resizing(false)
     , m_encoding_in_progress(false)
     , m_ssl_errors_detected(false)
 {
@@ -751,7 +751,7 @@ void WebView::loadFtpUrl(const QUrl &url)
     setStatusBarText(tr("Connecting to FTP server %1...").arg(url.toString()));
 }
 
-void WebView::ftpDownloadFile(const QUrl &url, QString fileName )
+void WebView::ftpDownloadFile(const QUrl & /* TODO url */, QString fileName )
 {
     if (!m_ftp)
         return;
@@ -793,7 +793,7 @@ void WebView::ftpDownloadFile(const QUrl &url, QString fileName )
 }
 
 
-void WebView::ftpCommandFinished(int res, bool error)
+void WebView::ftpCommandFinished(int /* TODO res */, bool error)
 {
     setCursor(Qt::ArrowCursor);
 

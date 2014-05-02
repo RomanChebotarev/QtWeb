@@ -73,7 +73,7 @@ public:
     bool   m_to_delete;
 
 protected:
-    void mouseDoubleClickEvent ( QMouseEvent * event );
+    void mouseDoubleClickEvent ( QMouseEvent * /* event */ );
 
 public slots:
     void open();
@@ -134,7 +134,7 @@ public:
     void setRemovePolicy(RemovePolicy policy);
 
 public slots:
-    void openItem(const QModelIndex& index);
+    void openItem(const QModelIndex& /* index */);
     void download(const QNetworkRequest &request, bool requestFileName = true);
     inline void download(const QUrl &url, bool requestFileName = false)
         { download(QNetworkRequest(url), requestFileName); }

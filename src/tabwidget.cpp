@@ -74,9 +74,9 @@ TabWidget::TabWidget(QWidget *parent)
     , m_nextTabAction(0)
     , m_previousTabAction(0)
     , m_recentlyClosedTabsMenu(0)
-    , m_lineEdits(0)
     , m_prevSelectedTab(-1)
     , m_prevSelectedTabMark(-1)
+    , m_lineEdits(0)
     , m_tabBar(new TabBar(this))
 {
     setElideMode(Qt::ElideRight);
@@ -640,7 +640,7 @@ void TabWidget::webViewIconChanged()
     }
 }
 
-void TabWidget::webViewLoadFinished(bool ok)
+void TabWidget::webViewLoadFinished(bool /* ok */)
 {
     WebView *webView = qobject_cast<WebView*>(sender());
     int index = webViewIndex(webView);

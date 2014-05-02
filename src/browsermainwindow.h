@@ -198,11 +198,12 @@ public:
     bool    m_showMenuIcons;
 
 private:
+    TabWidget *m_tabWidget;
+
     QToolBar *m_navigationBar;
     QToolBar *m_buttonsBar;
     BookmarksToolBar *m_bookmarksToolbar;
     ChaseWidget *m_chaseWidget;
-    TabWidget *m_tabWidget;
     bool    m_positionRestored;
     QString  m_dumpFile;
     bool     m_dumpActionQuit;
