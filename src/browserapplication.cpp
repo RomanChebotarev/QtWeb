@@ -102,7 +102,7 @@ BrowserApplication::BrowserApplication(int &argc, char **argv)
     , m_localServer(0)
     , quiting(false)
 {
-    QCoreApplication::setOrganizationName(QLatin1String("QtWeb.NET"));
+    QCoreApplication::setOrganizationName(QLatin1String("QtWeb.NET"));  //TODO replace hardcoded strings by static members
     QCoreApplication::setApplicationName(QLatin1String("QtWeb Internet Browser"));
     QCoreApplication::setApplicationVersion(QLatin1String("3.8.5"));
     QString serverName = QCoreApplication::applicationName();
@@ -195,7 +195,7 @@ void BrowserApplication::CheckSetTranslator()
 
 bool removeDir(const QString &dirName)
 {
-    bool result;
+    bool result = true;
     QDir dir(dirName);
 
     if (dir.exists()) {
@@ -218,7 +218,7 @@ bool removeDir(const QString &dirName)
 
 void BrowserApplication::definePortableRunMode()
 {
-    s_portableRunMode = !QFile::exists(QCoreApplication::applicationDirPath() + "/unins000.exe");
+    s_portableRunMode = !QFile::exists(QCoreApplication::applicationDirPath() + "/unins000.exe");   //TODO need refactor for non-Windows systems
     if (s_portableRunMode)
     {
         QSettings::setDefaultFormat(QSettings::IniFormat);
@@ -226,13 +226,14 @@ void BrowserApplication::definePortableRunMode()
         bool is_writable = true;
         {
             QSettings settings;
-            settings.beginGroup(QLatin1String("general"));
+            settings.beginGroup(QLatin1String("General"));
             is_writable = settings.isWritable();
             settings.setValue(QLatin1String("settings_writable"), true);
+            settings.sync();
         }
         {
             QSettings settings;
-            settings.beginGroup(QLatin1String("general"));
+            settings.beginGroup(QLatin1String("General"));
             bool tested_ok = settings.value(QLatin1String("settings_writable"), false).toBool();
             // just removing this test value
             if (is_writable)
@@ -241,9 +242,35 @@ void BrowserApplication::definePortableRunMode()
             {
                 // Copy settings from base template to temporary storage
                 QDir temp_dir(QDir::temp());
-                bool res = temp_dir.mkdir(settings.organizationName());
-                res = temp_dir.cd(settings.organizationName());
-                res = QFile::copy(  settings.fileName(), temp_dir.absolutePath() + QDir::separator() + settings.applicationName() + ".ini" );
+                if(!temp_dir.exists() && !temp_dir.mkdir(settings.organizationName()))
+                {
+                    QMessageBox::warning(NULL, tr("Error"),
+                        tr("Can't make temporary directory for store settings"));
+                    return;
+                }
+                if(!temp_dir.cd(settings.organizationName()))
+                {
+                    QMessageBox::warning(NULL, tr("Error"),
+                       tr("Can't change working directory to temporary directory for store settings"));
+                    return;
+                }
+                QString tmpSettingsName = temp_dir.absolutePath() + QDir::separator() + settings.applicationName() + ".ini";
+                if(QFile::exists(tmpSettingsName))
+                {
+                    if(!QFile::remove(tmpSettingsName))
+                    {
+                        QMessageBox::warning(NULL, tr("Error"),
+                            tr("Can't remove previous settings."));
+                        return;
+                    }
+                }
+                if(!QFile::copy(settings.fileName(), tmpSettingsName))
+                {
+                    QMessageBox::warning(NULL, tr("Error"),
+                        tr("Can't copy settings to temporary directory."));
+                    return;
+                }
+
                 // Change path to settings to the temp storage
                 QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, QDir::temp().tempPath());
             }
@@ -403,14 +430,15 @@ void BrowserApplication::loadSettings()
     if (standardFontSize > 16)
         standardFontSize = 16;
     QFont standardFont = QFont(standardFontFamily, standardFontSize);
-    standardFont = qVariantValue<QFont>(settings.value(QLatin1String("standardFont"), standardFont));
+    standardFont = settings.value(QLatin1String("standardFont"), standardFont).value<QFont>();
+
     defaultSettings->setFontFamily(QWebSettings::StandardFont, standardFont.family());
     defaultSettings->setFontSize(QWebSettings::DefaultFontSize, standardFont.pointSize());
 
     QString fixedFontFamily = defaultSettings->fontFamily(QWebSettings::FixedFont);
     int fixedFontSize = defaultSettings->fontSize(QWebSettings::DefaultFixedFontSize);
     QFont fixedFont = QFont(fixedFontFamily, fixedFontSize);
-    fixedFont = qVariantValue<QFont>(settings.value(QLatin1String("fixedFont"), fixedFont));
+    fixedFont = settings.value(QLatin1String("fixedFont"), fixedFont).value<QFont>();
     defaultSettings->setFontFamily(QWebSettings::FixedFont, fixedFont.family());
     defaultSettings->setFontSize(QWebSettings::DefaultFixedFontSize, fixedFont.pointSize());
 
@@ -943,6 +971,7 @@ QString BrowserApplication::dataLocation()
     }
     else
         return QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        // return QStandardPaths::writableLocation(QStandardPaths::DataLocation); // For Qt 5.*
 }
 
 QString BrowserApplication::downloadsLocation(bool create_dir)
@@ -953,6 +982,7 @@ QString BrowserApplication::downloadsLocation(bool create_dir)
         base = QCoreApplication::applicationDirPath();
     else
         base = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) ;
+        // base = QStandardPaths::writableLocation(QStandardPaths::DataLocation);   // For Qt 5.*
 
     QString downs(tr("Downloads"));
 

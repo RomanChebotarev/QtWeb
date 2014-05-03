@@ -263,10 +263,12 @@ void TorrentWindow::loadSettings()
     settings.beginGroup("Torrents");
     lastDirectory = settings.value("LastDirectory").toString();
     if (lastDirectory.isEmpty())
+    {
         if (!downloadDirectory.isEmpty())
             lastDirectory = downloadDirectory;
         else
             lastDirectory = QDir::currentPath();
+    }
     int up = settings.value("UploadLimit").toInt();
     int down = settings.value("DownloadLimit").toInt();
     uploadLimitSlider->setValue(up ? up : 170);

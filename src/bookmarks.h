@@ -180,7 +180,6 @@ public:
 
     BookmarkNode *node(const QModelIndex &index) const;
     QModelIndex index(BookmarkNode *node) const;
-    void sort ( int column, Qt::SortOrder order = Qt::AscendingOrder ) {;} 
 
 private:
 
@@ -302,8 +301,8 @@ private slots:
     void triggered(QAction *action);
     void activated(const QModelIndex &index);
     void build();
-    void deleteBookmark(const QUrl &url, const QString &title);
-    void renameBookmark(const QUrl &url, const QString &title, const QString &new_title);
+    void deleteBookmark(const QUrl &/* TODO need restore url variable? url*/, const QString &title);
+    void renameBookmark(const QUrl &/* TODO need restore variable? url*/, const QString &title, const QString &new_title);
     void addFolder(const QString &title, const QString &new_folder);
 
 private:

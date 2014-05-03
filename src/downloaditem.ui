@@ -154,7 +154,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="horizontalLayout" >
+    <layout class="QVBoxLayout" name="horizontalLayout1" >
      <property name="sizeConstraint" >
       <enum>QLayout::SetMinimumSize</enum>
      </property>

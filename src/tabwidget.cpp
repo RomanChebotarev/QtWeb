@@ -74,9 +74,9 @@ TabWidget::TabWidget(QWidget *parent)
     , m_nextTabAction(0)
     , m_previousTabAction(0)
     , m_recentlyClosedTabsMenu(0)
-    , m_lineEdits(0)
     , m_prevSelectedTab(-1)
     , m_prevSelectedTabMark(-1)
+    , m_lineEdits(0)
     , m_tabBar(new TabBar(this))
 {
     setElideMode(Qt::ElideRight);
@@ -439,22 +439,27 @@ WebView *TabWidget::newTab(bool makeCurrent, bool empty)
         QSettings settings;
         settings.beginGroup(QLatin1String("MainWindow"));
         int newTabAction = settings.value(QLatin1String("newTabAction"), 0).toInt();
-        switch (newTabAction) {
+        switch (newTabAction) { //TODO need enum for case *
 
         case 0: // welcome page
         {
-            QFile file(QLatin1String(":/Welcome.html"));
-            bool isOpened = file.open(QIODevice::ReadOnly | QIODevice::Text);
-            Q_ASSERT(isOpened);
+            QFile file(QLatin1String(":/Welcome.html"));    //TODO need static member
+            if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+            {
+                Q_ASSERT(false);
+                //QMessageBox::warning(this, tr("Error"),
+                //    tr("Can't open welcome file. Error code is: ") + QString::number(file.error()));
+                break;
+            }
             QString html = QString(QLatin1String(file.readAll()));
 
             QPixmap pix= style()->standardIcon(QStyle::SP_MessageBoxInformation).pixmap(32,32);
 
             QBuffer imageBuffer;
             imageBuffer.open(QBuffer::ReadWrite);
-            if (pix.save(&imageBuffer, "PNG"))
+            if (pix.save(&imageBuffer, "PNG"))  //TODO need static member
             {
-                html.replace(QLatin1String("LOGO_BINARY_DATA_HERE"),
+                html.replace(QLatin1String("LOGO_BINARY_DATA_HERE"),    //TODO need static member
                              QString(QLatin1String(imageBuffer.buffer().toBase64())));
             }
             webView->setHtml(html);
@@ -640,7 +645,7 @@ void TabWidget::webViewIconChanged()
     }
 }
 
-void TabWidget::webViewLoadFinished(bool ok)
+void TabWidget::webViewLoadFinished(bool /* ok */)
 {
     WebView *webView = qobject_cast<WebView*>(sender());
     int index = webViewIndex(webView);

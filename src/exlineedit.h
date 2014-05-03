@@ -55,7 +55,7 @@ class ClearButton : public QAbstractButton
 
 public:
     ClearButton(QWidget *parent = 0);
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent * /* event */);
 
 public slots:
     void textChanged(const QString &text);

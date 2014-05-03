@@ -69,10 +69,10 @@ HistoryManager::HistoryManager(QObject *parent)
     : QWebHistoryInterface(parent)
     , m_saveTimer(new AutoSaver(this))
     , m_historyLimit(7)
+    , m_historyCleaned(false)
     , m_historyModel(0)
     , m_historyFilterModel(0)
     , m_historyTreeModel(0)
-    , m_historyCleaned(false)
 {
     m_expiredTimer.setSingleShot(true);
     connect(&m_expiredTimer, SIGNAL(timeout()),

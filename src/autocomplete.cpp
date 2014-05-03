@@ -66,7 +66,7 @@ QString DecryptPassword(QString str)
     {
         for (int j = 0; j < 4 ; j++)
         {
-            char c = str[i + j].toAscii();
+            char c = str[i + j].toLatin1();
             int v = 0;
             if (c >= '0' && c <= '9')
                 v = c - '0';

@@ -72,14 +72,13 @@ ClearButton::ClearButton(QWidget *parent)
     setFocusPolicy(Qt::NoFocus);
 }
 
-void ClearButton::paintEvent(QPaintEvent *event)
+void ClearButton::paintEvent(QPaintEvent * /* event */)
 {
-    Q_UNUSED(event);
     QPainter painter(this);
     int height = this->height();
 
     painter.setRenderHint(QPainter::Antialiasing, true);
-    QColor color = palette().color(QPalette::Midlight);
+    /* QColor color = palette().color(QPalette::Midlight); TODO: unused? Removed! :-) */
     painter.setBrush(isDown()
                      ? palette().color(QPalette::Mid)
                      : palette().color(QPalette::Midlight));

@@ -123,7 +123,7 @@ private:
 
 private:
     void ftpCheckDisconnect();
-    void ftpDownloadFile(const QUrl &url, QString filename );
+    void ftpDownloadFile(const QUrl & /* url */, QString filename );
 
 private slots:
     void ftpCancelDownload();
