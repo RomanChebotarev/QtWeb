@@ -71,6 +71,7 @@ WebView::WebView(QWidget* parent)
     , m_font_resizing(false)
     , m_encoding_in_progress(false)
     , m_ssl_errors_detected(false)
+    , link_under_cursor(false)
 {
     setPage(m_page);
     connect(page(), SIGNAL(statusBarMessage(const QString&)),
@@ -89,6 +90,9 @@ WebView::WebView(QWidget* parent)
 
     connect(this, SIGNAL(linkClicked(const QUrl&)),
             this, SLOT(clickedUrl(const QUrl &)));
+
+    connect(page(), SIGNAL(linkHovered(const QString & , const QString &, const QString &)),
+            this, SLOT(linkHover(const QString & , const QString &, const QString &)));
 
     connect(page(), SIGNAL(downloadRequested(const QNetworkRequest &)),
             this, SLOT(downloadRequested(const QNetworkRequest &)));
@@ -110,6 +114,15 @@ WebView::WebView(QWidget* parent)
         setTextSizeMultiplier(ratio);
         QWebSettings::globalSettings()->setAttribute(QWebSettings::ZoomTextOnly, zoom_text_only);
     }
+}
+
+void WebView::linkHover(const QString & link, const QString & title, const QString & textContent )
+{
+    // To avoid ignoring link under cursor, when middle button clicked
+    if(link.isEmpty() && title.isEmpty() && textContent.isEmpty())
+        link_under_cursor = false;
+    else
+        link_under_cursor = true;
 }
 
 void WebView::slotInspectElement()
@@ -595,7 +608,7 @@ void WebView::mouseReleaseEvent(QMouseEvent *event)
         }
     }
 
-    if (/*!event->isAccepted() &&*/ (m_page->m_pressedButtons & Qt::MidButton)) 
+    if (/*!event->isAccepted() &&*/ ! link_under_cursor && (m_page->m_pressedButtons & Qt::MidButton))
     {
         QUrl url(QApplication::clipboard()->text(QClipboard::Selection));
         if (!url.isEmpty() && url.isValid() && !url.scheme().isEmpty()) 

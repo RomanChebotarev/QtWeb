@@ -88,53 +88,6 @@ extern bool ShellExec(QString path);
 
 BrowserMainWindow::BrowserMainWindow(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
-#if 0
-    , m_tabWidget(new TabWidget(this))
-    , findWidget(0)
-    , m_navSplit(0)
-    , m_buttonsBar(0)
-    , m_historyBack(0)
-    , m_historyForward(0)
-    , m_stop(0)
-    , m_reload(0)
-    , m_stylesMenu(0)
-    , m_encodingMenu(0)
-    , m_styles(0)
-    , m_emptyDiskCache(0)
-    , m_viewZoomTextOnly(0)
-    , m_positionRestored(0)
-    , m_goBackAction(0)
-    , m_goForwardAction(0)
-    , m_addBookmarkAction(0)
-    , m_homeAction(0)
-    , m_prefsAction(0)
-    , m_imagesAction(0)
-    , m_proxyAction(0)
-    , m_restoreTabAction(0)
-    , m_resetAction(0)
-    , m_enableInspector(0)
-    , m_inspectElement(0)
-    , m_dumpActionQuit(false)
-    , m_showMenuIcons(false)
-    , m_inspectAction(0) 
-    , m_keyboardAction(0)
-    , m_textSizeAction(0)
-    , m_bookmarksAction(0)
-    , m_sizesMenu(0)
-    , m_textSizeLarger(0)
-    , m_textSizeNormal(0) 
-    , m_textSizeSmaller(0)
-    , m_compMenu(0)
-//  , m_compatMenu(0)
-    , m_compatAction(0)
-    , m_compIE(0)
-    , m_compMozilla(0)
-    , m_compQtWeb(0)
-    , m_compOpera(0) 
-    , m_compSafari(0)
-    , m_compChrome(0)
-    , m_compCustom(0)
-#else
     , findWidget(0)
     , m_showMenuIcons(false)
     , m_buttonsBar(0)
@@ -166,7 +119,9 @@ BrowserMainWindow::BrowserMainWindow(QWidget *parent, Qt::WindowFlags flags)
     , m_enableInspector(0)
     , m_inspectElement(0)
     , m_inspectAction(0)
+#ifdef Q_WS_WIN
     , m_keyboardAction(0)
+#endif
     , m_textSizeAction(0)
     , m_bookmarksAction(0)
     , m_compatAction(0)
@@ -180,7 +135,6 @@ BrowserMainWindow::BrowserMainWindow(QWidget *parent, Qt::WindowFlags flags)
     , m_textSizeLarger(0)
     , m_textSizeNormal(0)
     , m_textSizeSmaller(0)
-#endif
 {
     setAttribute(Qt::WA_DeleteOnClose, true);
     statusBar()->setSizeGripEnabled(true);
@@ -1040,10 +994,12 @@ void BrowserMainWindow::setupMenu()
     this->addAction(about);
 }
 
+#ifdef Q_WS_WIN
 void BrowserMainWindow::slotVirtualKeyboard()
 {
     QDesktopServices::openUrl(QUrl::fromLocalFile("osk.exe"));
 }
+#endif
 
 void BrowserMainWindow::slotResetQtWeb()
 {
@@ -1223,11 +1179,13 @@ void BrowserMainWindow::setupToolBar()
     //m_navigationBar->addAction(m_stopReload);
     m_loadIcon = QIcon(QLatin1String(":loadpage.png"));
 
+#ifdef Q_WS_WIN
     m_keyboardAction = new QAction(QIcon(QLatin1String(":keyboard.png")), cmds.KeyboardTitle(), this);
     connect(m_keyboardAction, SIGNAL(triggered()), this, SLOT(slotVirtualKeyboard()));
     m_keyboardAction->setToolTip(tr("Open on-screen Virtual Keyboard"));
     m_keyboardAction->setStatusTip(m_keyboardAction->toolTip());
-    //m_navigationBar->addAction(m_keyboardAction); 
+    //m_navigationBar->addAction(m_keyboardAction);
+#endif
 
     m_textSizeAction = new QAction(this);
     m_textSizeAction->setText( tr("Change Text Size") );
@@ -1342,7 +1300,9 @@ void BrowserMainWindow::setupToolBar()
    
     m_buttonsBar = new QToolBar(this);
     m_buttonsBar->addAction(m_stopReload);
-    m_buttonsBar->addAction(m_keyboardAction); 
+#ifdef Q_WS_WIN
+    m_buttonsBar->addAction(m_keyboardAction);
+#endif
     m_buttonsBar->addAction(m_textSizeAction); 
     m_buttonsBar->addAction(m_compatAction); 
     m_buttonsBar->addAction(m_styles);
@@ -1416,7 +1376,9 @@ void BrowserMainWindow::checkToolBarButtons()
     bool bShowReset = settings.value(QLatin1String("showReset"), false).toBool();
     bool bShowInspect = settings.value(QLatin1String("showInspect"), false).toBool();
     bool bShowTextSize = settings.value(QLatin1String("showTextSize"), false).toBool();
+#ifdef Q_WS_WIN
     bool bShowKeyboard = settings.value(QLatin1String("showKeyboard"), false).toBool();
+#endif
     bool bShowBookmarks = settings.value(QLatin1String("showBookmarks"), false).toBool();
     bool bShowDisableJavaScript = settings.value(QLatin1String("showDisableJavaScript"), false).toBool();
 
@@ -1454,8 +1416,10 @@ void BrowserMainWindow::checkToolBarButtons()
 
     m_inspectAction->setVisible(bShowInspect); 
     m_inspectAction->setEnabled(  QWebSettings::globalSettings()->testAttribute(QWebSettings::DeveloperExtrasEnabled) ); 
-    m_keyboardAction->setVisible(bShowKeyboard); 
-    m_textSizeAction->setVisible(bShowTextSize); 
+#ifdef Q_WS_WIN
+    m_keyboardAction->setVisible(bShowKeyboard);
+#endif
+    m_textSizeAction->setVisible(bShowTextSize);
     m_bookmarksAction->setVisible(bShowBookmarks); 
 }
 

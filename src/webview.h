@@ -111,6 +111,7 @@ private:
     QString m_current_encoding;
     QUrl    m_current_encoding_url;
     bool    m_ssl_errors_detected;
+    bool    link_under_cursor;
 
 //////////////////////////////////////////////////// AC: FTP implementation
     QFtp*  m_ftp;
@@ -130,6 +131,7 @@ private slots:
     void ftpCommandFinished(int commandId, bool error);
     void ftpAddToList(const QUrlInfo &urlInfo);
     void ftpUpdateDataTransferProgress(qint64 readBytes, qint64 totalBytes);
+    void linkHover(const QString & link, const QString & title, const QString & textContent);
 };
 
 #endif

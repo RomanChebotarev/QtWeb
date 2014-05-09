@@ -161,7 +161,9 @@ private slots:
     void slotAboutToShowToolsMenu();
     void slotAboutToShowCompatibility();
     void slotEncodingChange();
+#ifdef Q_WS_WIN
     void slotVirtualKeyboard();
+#endif
     void slotChangeTextSize();
     void slotInspectElement();
     void slotCompatChange();
@@ -256,8 +258,10 @@ private:
     QAction *m_inspectElement; 
 
     QAction *m_inspectAction; 
-    QAction *m_keyboardAction; 
-    QAction *m_textSizeAction; 
+#ifdef Q_WS_WIN
+    QAction *m_keyboardAction;
+#endif
+    QAction *m_textSizeAction;
     QAction *m_bookmarksAction; 
 
     QAction *m_compatAction;

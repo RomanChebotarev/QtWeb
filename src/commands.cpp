@@ -251,8 +251,10 @@ QString MenuCommands::Get(int ind, What w) const
     if (cur++ == ind)
         return (w == Key ? SearchKey() : (w == Title? SearchTitle() : GetStr(SearchShortcuts())));
 
+#ifdef Q_WS_WIN
     if (cur++ == ind)
         return (w == Key ? KeyboardKey() : (w == Title? KeyboardTitle() : GetStr(KeyboardShortcuts())));
+#endif
 
     if (cur++ == ind)
         return (w == Key ? InspectorKey() : (w == Title? InspectorTitle() : GetStr(InspectorShortcuts())));

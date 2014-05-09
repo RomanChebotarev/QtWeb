@@ -330,9 +330,11 @@ public:
     QString             SearchTitle() const         { return m_data.value( SearchKey() , tr("&Web Search")).toString(); }
     QList<QKeySequence> SearchShortcuts() const     { return loadShortcuts( SearchKey(), QKeySequence(Qt::CTRL | Qt::Key_G) ); }
 
+#ifdef Q_WS_WIN
     QString             KeyboardKey() const         { return QLatin1String("Keyboard"); }
     QString             KeyboardTitle() const           { return m_data.value( KeyboardKey() , tr("Virtual &Keyboard")).toString(); }
     QList<QKeySequence> KeyboardShortcuts() const       { return loadShortcuts( KeyboardKey(), QKeySequence(Qt::CTRL | Qt::Key_K) ); }
+#endif
 
     QString             InspectorKey() const                { return QLatin1String("Inspector"); }
     QString             InspectorTitle() const          { return m_data.value( InspectorKey() , tr("&Enable Web Inspector")).toString(); }
