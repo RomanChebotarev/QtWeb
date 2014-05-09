@@ -342,10 +342,6 @@ public:
     QString             InspectTitle() const            { return m_data.value( InspectKey() , tr("&Inspect Element")).toString(); }
     QList<QKeySequence> InspectShortcuts() const        { return loadShortcuts( InspectKey(), QKeySequence(Qt::CTRL | Qt::Key_I) ); }
 
-    QString             OptionsKey() const              { return QLatin1String("Options"); }
-    QString             OptionsTitle() const            { return m_data.value(OptionsKey(), tr("&Options...")).toString(); }
-    QList<QKeySequence> OptionsShortcuts() const        { return loadShortcuts( OptionsKey(), QKeySequence(Qt::Key_F2) ); }
-
     // Window Menu
     QString             WindowKey() const               { return QLatin1String("Window"); }
     QString             WindowTitle() const         { return m_data.value(WindowKey() , tr("&Window")).toString(); }

@@ -243,7 +243,7 @@ BrowserMainWindow::BrowserMainWindow(QWidget *parent, Qt::WindowFlags flags)
     loadDefaultState();
     m_tabWidget->newTab();
 
-    int size = m_tabWidget->lineEditStack()->sizeHint().height();
+    int size = m_tabWidget->lineEditStack()->sizeHint().height();   //TODO need configurable
     m_navigationBar->setIconSize(QSize(size, size));
     m_buttonsBar->setIconSize(QSize(size, size));
 
@@ -997,15 +997,6 @@ void BrowserMainWindow::setupMenu()
     toolsMenu->addAction(m_inspectElement);
     this->addAction(m_inspectElement);
 
-    toolsMenu->addSeparator();
-
-    // Options
-    QAction* opts = new QAction(cmds.OptionsTitle(), this);
-    opts->setShortcuts(cmds.OptionsShortcuts());
-    connect(opts, SIGNAL(triggered()), this, SLOT(slotPreferences()));
-    toolsMenu->addAction( opts );
-    this->addAction( opts );
-
     // Window Menu
     m_windowMenu = menuBar()->addMenu(cmds.WindowTitle());
     connect(m_windowMenu, SIGNAL(aboutToShow()), this, SLOT(slotAboutToShowWindowMenu()));
@@ -1707,7 +1698,11 @@ void BrowserMainWindow::slotUpdateWindowTitle(const QString &title)
     if (title.isEmpty()) 
         setWindowTitle(("QtWeb Internet Browser"));
     else 
-        setWindowTitle(QString("%1 - QtWeb").arg(title));
+    {
+        QString t = title;
+        t.replace(QRegExp("\\s+"), " ");
+        setWindowTitle(QString("%1 - QtWeb").arg(t));
+    }
 }
 
 void BrowserMainWindow::slotEmptyDiskCache()

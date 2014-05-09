@@ -71,7 +71,6 @@ private slots:
     void chooseFont();
     void chooseFixedFont();
     void setAppStyle(int);
-    void useUserAgent(int);
     void warnLangChange(int);
     void setAutoProxy(int);
     void setProxyEnabled(bool);

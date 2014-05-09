@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>754</width>
-    <height>403</height>
+    <width>834</width>
+    <height>468</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Settings</string>
@@ -25,7 +31,7 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QTabWidget" name="tabWidget">
+    <widget class="QTabWidget" name="twSettings">
      <property name="currentIndex">
       <number>0</number>
      </property>
@@ -1466,7 +1472,7 @@
                <x>10</x>
                <y>20</y>
                <width>471</width>
-               <height>70</height>
+               <height>86</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1513,7 +1519,7 @@
          <x>10</x>
          <y>10</y>
          <width>641</width>
-         <height>51</height>
+         <height>60</height>
         </rect>
        </property>
        <property name="title">
@@ -1529,9 +1535,9 @@
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>20</y>
+          <y>29</y>
           <width>580</width>
-          <height>20</height>
+          <height>30</height>
          </rect>
         </property>
        </widget>
@@ -1539,9 +1545,9 @@
         <property name="geometry">
          <rect>
           <x>610</x>
-          <y>20</y>
-          <width>21</width>
-          <height>20</height>
+          <y>29</y>
+          <width>30</width>
+          <height>30</height>
          </rect>
         </property>
         <property name="text">
@@ -1553,9 +1559,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>130</y>
+         <y>152</y>
          <width>641</width>
-         <height>51</height>
+         <height>60</height>
         </rect>
        </property>
        <property name="title">
@@ -1571,9 +1577,9 @@
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>20</y>
-          <width>600</width>
-          <height>22</height>
+          <y>30</y>
+          <width>610</width>
+          <height>30</height>
          </rect>
         </property>
         <property name="editable">
@@ -1754,11 +1760,11 @@
         </item>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_5">
+      <widget class="QGroupBox" name="gbAdvCustom">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>200</y>
+         <y>228</y>
          <width>641</width>
          <height>61</height>
         </rect>
@@ -1776,9 +1782,9 @@
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>20</y>
-          <width>290</width>
-          <height>31</height>
+          <y>30</y>
+          <width>302</width>
+          <height>30</height>
          </rect>
         </property>
         <property name="text">
@@ -1788,10 +1794,10 @@
        <widget class="QPushButton" name="buttonEditShortcuts">
         <property name="geometry">
          <rect>
-          <x>330</x>
-          <y>20</y>
-          <width>300</width>
-          <height>31</height>
+          <x>338</x>
+          <y>30</y>
+          <width>302</width>
+          <height>30</height>
          </rect>
         </property>
         <property name="text">
@@ -1803,9 +1809,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>70</y>
+         <y>80</y>
          <width>641</width>
-         <height>51</height>
+         <height>71</height>
         </rect>
        </property>
        <property name="title">
@@ -1821,9 +1827,9 @@
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>20</y>
+          <y>30</y>
           <width>580</width>
-          <height>20</height>
+          <height>30</height>
          </rect>
         </property>
         <property name="text">
@@ -1834,9 +1840,9 @@
         <property name="geometry">
          <rect>
           <x>610</x>
-          <y>20</y>
-          <width>21</width>
-          <height>20</height>
+          <y>30</y>
+          <width>30</width>
+          <height>30</height>
          </rect>
         </property>
         <property name="text">
@@ -1905,10 +1911,10 @@
   <tabstop>btnExtView</tabstop>
   <tabstop>chkUserAgent</tabstop>
   <tabstop>comboAgents</tabstop>
-  <tabstop>groupBox_5</tabstop>
+  <tabstop>gbAdvCustom</tabstop>
   <tabstop>buttonSearchProviders</tabstop>
   <tabstop>buttonEditShortcuts</tabstop>
-  <tabstop>tabWidget</tabstop>
+  <tabstop>twSettings</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>

@@ -261,9 +261,6 @@ QString MenuCommands::Get(int ind, What w) const
         return (w == Key ? InspectKey() : (w == Title? InspectTitle() : GetStr(InspectShortcuts())));
 
     if (cur++ == ind)
-        return (w == Key ? OptionsKey() : (w == Title? OptionsTitle() : GetStr(OptionsShortcuts())));
-
-    if (cur++ == ind)
         return (w == Key ? WindowKey() : (w == Title? WindowTitle() : ""));
 
     if (cur++ == ind)

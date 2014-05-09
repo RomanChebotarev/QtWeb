@@ -148,7 +148,7 @@ TabWidget::TabWidget(QWidget *parent)
     addTabButton->setDefaultAction(m_newTabAction);
     addTabButton->setAutoRaise(true);
     addTabButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
-    setCornerWidget(addTabButton, Qt::TopLeftCorner);
+    setCornerWidget(addTabButton, Qt::TopLeftCorner);   //TODO Need confirurable
 
     connect(this, SIGNAL(currentChanged(int)), this, SLOT(currentChanged(int)));
 
@@ -394,6 +394,12 @@ WebView *TabWidget::newTab(bool makeCurrent, bool empty)
 
     // webview
     WebView *webView = new WebView;
+
+    // Set background color for sites without background color in <body ...> tag or CSS
+    QPalette p;
+    p.setBrush(QPalette::Normal, QPalette::Base, QBrush(Qt::white));
+    webView->setPalette(p);
+
     urlLineEdit->setWebView(webView);
     connect(webView, SIGNAL(loadStarted()),
             this, SLOT(webViewLoadStarted()));

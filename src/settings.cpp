@@ -67,7 +67,6 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     connect(fixedFontButton, SIGNAL(clicked()), this, SLOT(chooseFixedFont()));
     connect(comboBoxStyle, SIGNAL(currentIndexChanged(int)), this,   SLOT(setAppStyle(int)));
     connect(showPasswordsButton, SIGNAL(clicked()), this, SLOT(showPasswords()));
-    connect(chkUserAgent, SIGNAL(stateChanged ( int ) ), this, SLOT(useUserAgent(int)));
     connect(buttonSearchProviders, SIGNAL(clicked() ), this, SLOT( showSearchProviders() ) );
     connect(buttonEditShortcuts, SIGNAL(clicked() ), this, SLOT( editShortcuts() ) );
     connect(btnExtView, SIGNAL(clicked() ), this, SLOT( chooseExtViewer() ) );
@@ -109,21 +108,11 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     connect(tbTextSize, SIGNAL(clicked()), this, SLOT( checkAddressBarButtons() ));
     connect(tbVirtKeyb, SIGNAL(clicked()), this, SLOT( checkAddressBarButtons() ));
     connect(tbJavaScript, SIGNAL(clicked()), this, SLOT( checkAddressBarButtons() ));
+
+    twSettings->setCurrentIndex(0);
 }
 
 extern QString DefaultDownloadPath(bool create);
-
-void SettingsDialog::useUserAgent(int state)
-{
-    if (state == Qt::Checked)
-    {
-        comboAgents->setEnabled(true);
-    }
-    else
-    {
-        comboAgents->setEnabled(false);
-    }
-}
 
 void SettingsDialog::setAutoProxy(int state)
 {
@@ -194,6 +183,7 @@ void SettingsDialog::loadDefaults()
     chkUserStyleSheet->setChecked(false);
     chkUserAgent->setChecked(false);
     comboAgents->setEditText("");
+    gbAdvCustom->setChecked(false);
 
     chkExtViewer->setChecked(false);
 
@@ -341,6 +331,8 @@ void SettingsDialog::loadFromSettings()
 
     chkUserAgent->setChecked( settings.value(QLatin1String("customUserAgent"), chkUserAgent->isChecked()).toBool());
     comboAgents->setEditText(settings.value(QLatin1String("UserAgent")).toString());
+
+    gbAdvCustom->setChecked( settings.value(QLatin1String("advancedCustomization"), gbAdvCustom->isChecked()).toBool());
 
     chkExtViewer->setChecked( settings.value(QLatin1String("useExtViewer"), chkExtViewer->isChecked()).toBool());
 
@@ -540,6 +532,7 @@ void SettingsDialog::saveToSettings()
     settings.setValue(QLatin1String("useExtViewer"), chkExtViewer->isChecked());
     settings.setValue(QLatin1String("ExtViewer"), txtExtViewer->text());
     settings.setValue(QLatin1String("customUserAgent"), chkUserAgent->isChecked());
+    settings.setValue(QLatin1String("advancedCustomization"), gbAdvCustom->isChecked());
 
     QString current_agent = settings.value(QLatin1String("UserAgent"), "" ).toString();
     settings.setValue(QLatin1String("UserAgent"), comboAgents->currentText());
