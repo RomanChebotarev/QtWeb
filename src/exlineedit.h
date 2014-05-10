@@ -110,6 +110,7 @@ protected:
 
 signals:
     void completed(QString);
+    void escapePressed();
 
 
 private slots:

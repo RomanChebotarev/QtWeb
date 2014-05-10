@@ -88,6 +88,7 @@ public slots:
 protected:
     void closeEvent(QCloseEvent *event);
     void setLastSizing(int value);
+    bool eventFilter(QObject *obj, QEvent *e);
 
 private slots:
     void save();

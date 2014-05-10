@@ -425,6 +425,7 @@ WebView *TabWidget::newTab(bool makeCurrent, bool empty)
             this, SIGNAL(statusBarVisibilityChangeRequested(bool)));
     connect(webView->page(), SIGNAL(toolBarVisibilityChangeRequested(bool)),
             this, SIGNAL(toolBarVisibilityChangeRequested(bool)));
+    connect(urlLineEdit, SIGNAL(escapePressed()), webView, SLOT(setFocus()));
 
     addTab(webView, tr("about:blank"));
 

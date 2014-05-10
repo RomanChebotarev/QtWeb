@@ -212,6 +212,21 @@ BrowserMainWindow::BrowserMainWindow(QWidget *parent, Qt::WindowFlags flags)
     connect(findWidget, SIGNAL(find(QString, bool)), this,
         SLOT(find(QString, bool)));
     connect(findWidget, SIGNAL(escapePressed()), this, SLOT(slotShowWindow()));
+
+    m_toolbarSearch->installEventFilter(this);
+}
+
+bool BrowserMainWindow::eventFilter(QObject *obj, QEvent *e)
+{
+    if(obj == this->m_toolbarSearch && e->type() == QEvent::KeyPress)
+    {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(e);
+        if (keyEvent->key() == Qt::Key_Escape)
+        {
+            currentTab()->setFocus();
+        }
+    }
+    return QMainWindow::eventFilter(obj, e);
 }
 
 BrowserMainWindow::~BrowserMainWindow()
