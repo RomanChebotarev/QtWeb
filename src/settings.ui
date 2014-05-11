@@ -281,6 +281,13 @@
        <string>Appearance</string>
       </attribute>
       <layout class="QGridLayout">
+       <item row="1" column="2">
+        <widget class="QPushButton" name="standardFontButton">
+         <property name="text">
+          <string>Select...</string>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_5">
          <property name="text">
@@ -291,52 +298,10 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="standardLabel">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="text">
-          <string>Times 16</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QPushButton" name="standardFontButton">
-         <property name="text">
-          <string>Select...</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>Fixed-width font:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="fixedLabel">
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="text">
-          <string>Courier 13</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+       <item row="4" column="1">
+        <widget class="QComboBox" name="comboBoxStyle">
+         <property name="sizeAdjustPolicy">
+          <enum>QComboBox::AdjustToMinimumContentsLength</enum>
          </property>
         </widget>
        </item>
@@ -347,10 +312,111 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
-        <widget class="QComboBox" name="comboBoxStyle">
-         <property name="sizeAdjustPolicy">
-          <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>Main Menu:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QComboBox" name="comboMainMenu">
+         <item>
+          <property name="text">
+           <string>Display the Menu Bar and Menu Icons</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Display the Menu Bar, but hide Menu Icons (re-start is required when changed)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Hide the Menu Bar (functionality can be accessed via Shortcuts)</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="comboLangs">
+         <item>
+          <property name="text">
+           <string>English (en_US)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Chinese Traditional (zh_tw)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Chinese Simplified (zh_cn)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Czech (cz)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Farsi (fa)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>French (fr)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>German (de)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Hungarian (hu)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Italian (it)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Japanese (ja)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Russian (ru_RU)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Spanish (es)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Swedish (sv)</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_22">
+         <property name="text">
+          <string>Language:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
@@ -364,7 +430,7 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
+       <item row="8" column="1">
         <widget class="QGroupBox" name="groupBox_4">
          <property name="title">
           <string>Show/Hide toolbar buttons</string>
@@ -813,111 +879,123 @@
          </widget>
         </widget>
        </item>
-       <item row="5" column="1">
-        <widget class="QComboBox" name="comboMainMenu">
-         <item>
-          <property name="text">
-           <string>Display the Menu Bar and Menu Icons</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Display the Menu Bar, but hide Menu Icons (re-start is required when changed)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Hide the Menu Bar (functionality can be accessed via Shortcuts)</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_14">
+       <item row="2" column="1">
+        <widget class="QLabel" name="fixedLabel">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
          <property name="text">
-          <string>Main Menu:</string>
+          <string>Courier 13</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="comboLangs">
-         <item>
-          <property name="text">
-           <string>English (en_US)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Chinese Traditional (zh_tw)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Chinese Simplified (zh_cn)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Czech (cz)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Farsi (fa)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>French (fr)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>German (de)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Hungarian (hu)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Italian (it)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Japanese (ja)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Russian (ru_RU)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Spanish (es)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Swedish (sv)</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_22">
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_6">
          <property name="text">
-          <string>Language:</string>
+          <string>Fixed-width font:</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="standardLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="text">
+          <string>Times 16</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QComboBox" name="cbToolbarSize">
+         <property name="maximumSize">
+          <size>
+           <width>80</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="currentIndex">
+          <number>5</number>
+         </property>
+         <item>
+          <property name="text">
+           <string>50%</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>60%</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>70%</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>80%</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>90%</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>100%</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>110%</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>120%</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>130%</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>140%</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>150%</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_23">
+         <property name="text">
+          <string>Toolbar size:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>

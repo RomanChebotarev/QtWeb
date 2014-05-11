@@ -197,9 +197,7 @@ BrowserMainWindow::BrowserMainWindow(QWidget *parent, Qt::WindowFlags flags)
     loadDefaultState();
     m_tabWidget->newTab();
 
-    int size = m_tabWidget->lineEditStack()->sizeHint().height();   //TODO need configurable
-    m_navigationBar->setIconSize(QSize(size, size));
-    m_buttonsBar->setIconSize(QSize(size, size));
+    this->setToolbarSizes(toolbarSize);
 
     WebPage::setUserAgent();
 
@@ -1369,6 +1367,10 @@ void BrowserMainWindow::setupToolBar()
 
     m_chaseWidget = new ChaseWidget(this);
     m_navigationBar->addWidget(m_chaseWidget);
+
+    QString tbSize = settings.value(QLatin1String("ToolbarSize"), "").toString();
+    if(!tbSize.isEmpty())
+        toolbarSize = tbSize.remove("%").toInt();
 
     checkToolBarButtons();
 }
@@ -2684,4 +2686,12 @@ void BrowserMainWindow::slotFileSavePdf()
     
     SavePDF dlg(m_title, currentTab()->page()->mainFrame(), this);
     dlg.exec();
+}
+
+void BrowserMainWindow::setToolbarSizes(const int percents)
+{
+    int size = m_tabWidget->lineEditStack()->sizeHint().height() / (100.0 / percents);
+    m_navigationBar->setIconSize(QSize(size, size));
+    m_buttonsBar->setIconSize(QSize(size, size));
+    toolbarSize = size;
 }

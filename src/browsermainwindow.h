@@ -76,6 +76,7 @@ public:
     void emptyCache();
     void setLoadIcon();
     void checkToolBarButtons();
+    void setToolbarSizes(const int percents);
 
 public slots:
     void loadPage(const QString &url);
@@ -287,6 +288,8 @@ private:
     QIcon m_privacyIconOn;
 
     QString m_title;
+
+    int toolbarSize;
 };
 
 #endif // BROWSERMAINWINDOW_H

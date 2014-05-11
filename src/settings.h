@@ -86,6 +86,7 @@ private slots:
     void removeBlockAdEx();
     void blockMostAds();
     void blockMostCnts();
+    void toolbarSizeChanged(const QString &text);
 
 protected:
     void addBlockItems(const QLatin1String&, QListWidget* );
@@ -94,7 +95,10 @@ private:
     QFont standardFont;
     QFont fixedFont;
     QString m_last_style;
+    QString m_current_toolbar_size;
     bool  fontChanged;
+
+    static int  cbToolbarSizeDefaultIndex;
 };
 
 #endif // SETTINGS_H

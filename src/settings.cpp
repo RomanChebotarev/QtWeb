@@ -55,6 +55,8 @@
 #include <QSysInfo>
 #include <QInputDialog>
 
+int SettingsDialog::cbToolbarSizeDefaultIndex = 5;
+
 SettingsDialog::SettingsDialog(QWidget *parent)
     : QDialog(parent)
 {
@@ -110,9 +112,16 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     connect(tbJavaScript, SIGNAL(clicked()), this, SLOT( checkAddressBarButtons() ));
 
     twSettings->setCurrentIndex(0);
+    connect(cbToolbarSize, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(toolbarSizeChanged(const QString &)));
 }
 
-extern QString DefaultDownloadPath(bool create);
+void SettingsDialog::toolbarSizeChanged(const QString &text)
+{
+    int pc = QString(text).remove("%").toInt();
+    BrowserApplication::instance()->mainWindow()->setToolbarSizes(pc);
+}
+
+extern QString DefaultDownloadPath(bool create);    //TODO WTF???
 
 void SettingsDialog::setAutoProxy(int state)
 {
@@ -153,6 +162,7 @@ void SettingsDialog::loadDefaults()
     int fixedFontSize = defaultSettings->fontSize(QWebSettings::DefaultFixedFontSize);
     fixedFont = QFont(fixedFontFamily, fixedFontSize);
     fixedLabel->setText(QString(QLatin1String("%1 %2")).arg(fixedFont.family()).arg(fixedFont.pointSize()));
+    cbToolbarSize->setCurrentIndex(cbToolbarSizeDefaultIndex);
 
     comboMainMenu->setCurrentIndex(0);
 
@@ -243,6 +253,17 @@ void SettingsDialog::loadFromSettings()
     newTabAction->setCurrentIndex(settings.value(QLatin1String("newTabAction"), 0).toInt());
 
     mouseweelClick->setCurrentIndex(settings.value(QLatin1String("mouseweelClickAction"), 1).toInt());
+
+    QString tbSize = settings.value(QLatin1String("ToolbarSize"), "").toString();
+    if(!tbSize.isEmpty())
+    {
+        int index = cbToolbarSize->findText(tbSize);
+        if(index == -1)
+            cbToolbarSize->setCurrentIndex(cbToolbarSizeDefaultIndex);
+        else
+            cbToolbarSize->setCurrentIndex(index);
+        m_current_toolbar_size = tbSize;
+    }
 
     settings.endGroup();
 
@@ -458,6 +479,7 @@ void SettingsDialog::saveToSettings()
     settings.setValue(QLatin1String("home"), homeLineEdit->text());
     settings.setValue(QLatin1String("onStartup"), startupAction->currentIndex());
     settings.setValue(QLatin1String("newTabAction"), newTabAction->currentIndex());
+    settings.setValue(QLatin1String("ToolbarSize"), cbToolbarSize->currentText());
     settings.endGroup();
 
     settings.beginGroup(QLatin1String("general"));
@@ -732,6 +754,9 @@ void SettingsDialog::reject()
     {
         QApplication::setStyle(QStyleFactory::create(m_last_style));
     }
+
+    if (m_current_toolbar_size != cbToolbarSize->currentText())
+        BrowserApplication::instance()->mainWindow()->setToolbarSizes(m_current_toolbar_size.remove("%").toInt());
 
     QDialog::reject();
 }
