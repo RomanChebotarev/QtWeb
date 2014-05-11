@@ -214,6 +214,13 @@ BrowserMainWindow::BrowserMainWindow(QWidget *parent, Qt::WindowFlags flags)
     m_toolbarSearch->installEventFilter(this);
 }
 
+void BrowserMainWindow::setTabStop(QWidget *addrLineEdit)
+{
+    if(!addrLineEdit)
+        return;
+    setTabOrder(addrLineEdit, m_toolbarSearch->lineEdit());
+}
+
 bool BrowserMainWindow::eventFilter(QObject *obj, QEvent *e)
 {
     if(obj == this->m_toolbarSearch && e->type() == QEvent::KeyPress)

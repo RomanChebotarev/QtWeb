@@ -77,6 +77,7 @@ public:
     void setLoadIcon();
     void checkToolBarButtons();
     void setToolbarSizes(const int percents);
+    void setTabStop(QWidget *addrLineEdit);
 
 public slots:
     void loadPage(const QString &url);

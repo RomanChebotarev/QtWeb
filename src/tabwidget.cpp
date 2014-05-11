@@ -257,6 +257,8 @@ void TabWidget::currentChanged(int index)
     emit loadProgress(webView->progress());
     emit showStatusBarMessage(webView->lastStatusBarText());
     webView->setFocus();
+    // Configuring tab-order for main-window. Address line <=> Search line
+    BrowserApplication::instance()->mainWindow()->setTabStop(lineEdit(index));
 }
 
 QAction *TabWidget::newTabAction() const
@@ -752,6 +754,10 @@ void TabWidget::loadUrlInCurrentTab(const QUrl &url)
     if (webView) {
         webView->loadUrl(url);
         webView->setFocus();
+        // Activate signal Esc -> set focus to webView
+        UrlLineEdit *le = qobject_cast<UrlLineEdit*>(m_lineEdits->widget(currentIndex()));
+        if(le)
+            connect(le, SIGNAL(escapePressed()), webView, SLOT(setFocus()));
     }
 }
 
