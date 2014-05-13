@@ -33,7 +33,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="twSettings">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -117,6 +117,9 @@
          </item>
         </widget>
        </item>
+       <item row="5" column="1" colspan="2">
+        <widget class="QLineEdit" name="downloadsLocation"/>
+       </item>
        <item row="5" column="0">
         <widget class="QLabel" name="label_7">
          <property name="text">
@@ -126,9 +129,6 @@
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
-       </item>
-       <item row="5" column="1" colspan="2">
-        <widget class="QLineEdit" name="downloadsLocation"/>
        </item>
        <item row="8" column="0">
         <widget class="QLabel" name="label_16">
@@ -996,6 +996,13 @@
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QCheckBox" name="cbShowOneTab">
+         <property name="text">
+          <string>Show tabbar when only one tab opened</string>
          </property>
         </widget>
        </item>

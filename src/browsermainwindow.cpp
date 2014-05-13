@@ -141,6 +141,7 @@ BrowserMainWindow::BrowserMainWindow(QWidget *parent, Qt::WindowFlags flags)
     statusBar()->setSizeGripEnabled(true);
     setupMenu();
     setupToolBar();
+    setupTabBar();
 
     QWidget *centralWidget = new QWidget(this);
     BookmarksModel *boomarksModel = BrowserApplication::bookmarksManager()->bookmarksModel();
@@ -213,6 +214,14 @@ BrowserMainWindow::BrowserMainWindow(QWidget *parent, Qt::WindowFlags flags)
     connect(findWidget, SIGNAL(escapePressed()), this, SLOT(slotShowWindow()));
 
     m_toolbarSearch->installEventFilter(this);
+}
+
+void BrowserMainWindow::setupTabBar()
+{
+    QSettings settings;
+    settings.beginGroup(QLatin1String("MainWindow"));
+    tabWidget()->tabBar()->setShowTabBarWhenOneTab(settings.value(QLatin1String("ShowTabbarWhenOneTab"), false).toBool());    //FIXME need public const variable from TabBar class
+    settings.endGroup();
 }
 
 void BrowserMainWindow::setTabStop(QWidget *addrLineEdit)
@@ -290,7 +299,6 @@ QByteArray BrowserMainWindow::saveState(bool withTabs) const
     else
         stream << QByteArray();
 
-    stream << m_tabWidget->tabBar()->showTabBarWhenOneTab();
     stream << !statusBar()->isHidden();
 
     QByteArray geo = QMainWindow::saveGeometry();
@@ -326,12 +334,10 @@ bool BrowserMainWindow::restoreState(const QByteArray &state)
     QByteArray navGeo;
     QByteArray bookGeo;
     bool showStatusbar;
-    bool showTabBarWhenOneTab;
     QByteArray splitterState1;//, splitterState2;
 
     stream >> tabState;
 
-    stream >> showTabBarWhenOneTab;
     stream >> showStatusbar;
     stream >> mainwindowGeo;
     stream >> mainwindowState;
@@ -341,8 +347,6 @@ bool BrowserMainWindow::restoreState(const QByteArray &state)
 
     if (!tabState.isEmpty() && !tabWidget()->restoreState(tabState))
         return false;
-
-    m_tabWidget->tabBar()->setShowTabBarWhenOneTab(showTabBarWhenOneTab);
 
 
     if (!m_positionRestored)
@@ -623,14 +627,6 @@ void BrowserMainWindow::setupMenu()
     connect(m_viewToolBar, SIGNAL(triggered()), this, SLOT(slotViewToolbar()));
     viewMenu->addAction(m_viewToolBar);
     this->addAction(m_viewToolBar);
-
-    // Show/Hide Tab Bar
-    QAction *viewTabBarAction = m_tabWidget->tabBar()->viewTabBarAction();
-    viewTabBarAction ->setShortcuts(cmds.TabShortcuts());
-    viewMenu->addAction(viewTabBarAction);
-    this->addAction(viewTabBarAction);
-    connect(viewTabBarAction, SIGNAL(changed()),
-            this, SLOT(save()));
 
     // Show/Hide Stastus Bar
     m_viewStatusBar = new QAction(this);
@@ -1197,7 +1193,7 @@ void BrowserMainWindow::setupToolBar()
     m_stopReload = new QAction(this);
     m_reloadIcon = style()->standardIcon(QStyle::SP_BrowserReload);
     m_stopReload->setIcon(m_reloadIcon);
-    //m_navigationBar->addAction(m_stopReload);
+    m_navigationBar->addAction(m_stopReload);
     m_loadIcon = QIcon(QLatin1String(":loadpage.png"));
 
 #ifdef Q_WS_WIN
@@ -1320,7 +1316,6 @@ void BrowserMainWindow::setupToolBar()
 
    
     m_buttonsBar = new QToolBar(this);
-    m_buttonsBar->addAction(m_stopReload);
 #ifdef Q_WS_WIN
     m_buttonsBar->addAction(m_keyboardAction);
 #endif

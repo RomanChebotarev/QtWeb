@@ -185,6 +185,7 @@ private:
     void loadDefaultState();
     void setupMenu();
     void setupToolBar();
+    void setupTabBar();
     void updateStatusbarActionText(bool visible);
     QAction* menuAddEncoding(QString name, QString encoding);
 

@@ -75,7 +75,7 @@ int TabShortcut::tab()
 TabBar::TabBar(QWidget *parent)
     : QTabBar(parent)
     , m_viewTabBarAction(0)
-    , m_showTabBarWhenOneTab(true)
+    , m_showTabBarWhenOneTab(false)
 {
     setElideMode(Qt::ElideRight);
     setContextMenuPolicy(Qt::CustomContextMenu);

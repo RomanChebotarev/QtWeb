@@ -48,6 +48,8 @@
 #include "networkaccessmanager.h"
 #include "webview.h"
 #include "webpage.h"
+#include "tabwidget.h"
+#include "tabbar.h"
 
 #include <QtCore/QSettings>
 #include <QtGui/QtGui>
@@ -228,6 +230,8 @@ void SettingsDialog::loadDefaults()
 
     chkBlockAdsEx->setChecked(false);
     listAdEx->clear();
+
+    cbShowOneTab->setChecked(BrowserApplication::instance()->mainWindow()->tabWidget()->tabBar()->showTabBarWhenOneTab());  //FIXME need public const variable from TabBar class
 }
 
 QString defaultHome = QLatin1String("http://www.qtweb.net/");
@@ -263,6 +267,7 @@ void SettingsDialog::loadFromSettings()
         else
             cbToolbarSize->setCurrentIndex(index);
     }
+    cbShowOneTab->setChecked(settings.value(QLatin1String("ShowTabbarWhenOneTab"), false).toBool());
 
     settings.endGroup();
 
@@ -478,8 +483,10 @@ void SettingsDialog::saveToSettings()
     settings.setValue(QLatin1String("home"), homeLineEdit->text());
     settings.setValue(QLatin1String("onStartup"), startupAction->currentIndex());
     settings.setValue(QLatin1String("newTabAction"), newTabAction->currentIndex());
+
     settings.setValue(QLatin1String("ToolbarSize"), cbToolbarSize->currentText());
-    BrowserApplication::instance()->mainWindow()->setToolbarSizes(cbToolbarSize->currentText().remove("%").toInt(), true);
+    settings.setValue(QLatin1String("ShowTabbarWhenOneTab"), cbShowOneTab->isChecked());
+
     settings.endGroup();
 
     settings.beginGroup(QLatin1String("general"));
@@ -652,6 +659,16 @@ void SettingsDialog::saveToSettings()
 
         if (fontChanged)
             BrowserApplication::instance()->mainWindow()->currentTab()->reload();
+
+    }
+
+    if (BrowserApplication::instance()->mainWindow())
+    {
+        BrowserApplication::instance()->mainWindow()->setToolbarSizes(cbToolbarSize->currentText().remove("%").toInt(), true);
+
+        if(BrowserApplication::instance()->mainWindow()->tabWidget() &&
+                BrowserApplication::instance()->mainWindow()->tabWidget()->tabBar())
+            BrowserApplication::instance()->mainWindow()->tabWidget()->tabBar()->setShowTabBarWhenOneTab(cbShowOneTab->isChecked());
     }
 
 }
