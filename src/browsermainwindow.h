@@ -76,7 +76,8 @@ public:
     void emptyCache();
     void setLoadIcon();
     void checkToolBarButtons();
-    void setToolbarSizes(const int percents);
+    int  toolbarSizes() { return toolbarSize; }
+    void setToolbarSizes(int percents = 0, bool save = false);
     void setTabStop(QWidget *addrLineEdit);
 
 public slots:

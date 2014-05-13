@@ -9,7 +9,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FO BrowserMainWindow *mw = BrowserApplication::instance()->mainWindow()R A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -135,6 +135,7 @@ BrowserMainWindow::BrowserMainWindow(QWidget *parent, Qt::WindowFlags flags)
     , m_textSizeLarger(0)
     , m_textSizeNormal(0)
     , m_textSizeSmaller(0)
+    , toolbarSize(100)  // % toolbar size
 {
     setAttribute(Qt::WA_DeleteOnClose, true);
     statusBar()->setSizeGripEnabled(true);
@@ -197,7 +198,7 @@ BrowserMainWindow::BrowserMainWindow(QWidget *parent, Qt::WindowFlags flags)
     loadDefaultState();
     m_tabWidget->newTab();
 
-    this->setToolbarSizes(toolbarSize);
+    setToolbarSizes(toolbarSize);
 
     WebPage::setUserAgent();
 
@@ -1375,9 +1376,10 @@ void BrowserMainWindow::setupToolBar()
     m_chaseWidget = new ChaseWidget(this);
     m_navigationBar->addWidget(m_chaseWidget);
 
-    QString tbSize = settings.value(QLatin1String("ToolbarSize"), "").toString();
+    // Configuring toolbar size
+    QString tbSize = settings.value(QLatin1String("ToolbarSize"), "").toString().remove("%");
     if(!tbSize.isEmpty())
-        toolbarSize = tbSize.remove("%").toInt();
+        toolbarSize = tbSize.toInt();
 
     checkToolBarButtons();
 }
@@ -2695,10 +2697,15 @@ void BrowserMainWindow::slotFileSavePdf()
     dlg.exec();
 }
 
-void BrowserMainWindow::setToolbarSizes(const int percents)
+void BrowserMainWindow::setToolbarSizes(int percents, bool save)
 {
+    if(!percents)
+        percents = toolbarSize;
+
     int size = m_tabWidget->lineEditStack()->sizeHint().height() / (100.0 / percents);
     m_navigationBar->setIconSize(QSize(size, size));
     m_buttonsBar->setIconSize(QSize(size, size));
-    toolbarSize = size;
+
+    if(save)
+        toolbarSize = percents;
 }

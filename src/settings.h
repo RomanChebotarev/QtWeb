@@ -95,7 +95,6 @@ private:
     QFont standardFont;
     QFont fixedFont;
     QString m_last_style;
-    QString m_current_toolbar_size;
     bool  fontChanged;
 
     static int  cbToolbarSizeDefaultIndex;

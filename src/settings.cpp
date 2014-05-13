@@ -262,7 +262,6 @@ void SettingsDialog::loadFromSettings()
             cbToolbarSize->setCurrentIndex(cbToolbarSizeDefaultIndex);
         else
             cbToolbarSize->setCurrentIndex(index);
-        m_current_toolbar_size = tbSize;
     }
 
     settings.endGroup();
@@ -480,6 +479,7 @@ void SettingsDialog::saveToSettings()
     settings.setValue(QLatin1String("onStartup"), startupAction->currentIndex());
     settings.setValue(QLatin1String("newTabAction"), newTabAction->currentIndex());
     settings.setValue(QLatin1String("ToolbarSize"), cbToolbarSize->currentText());
+    BrowserApplication::instance()->mainWindow()->setToolbarSizes(cbToolbarSize->currentText().remove("%").toInt(), true);
     settings.endGroup();
 
     settings.beginGroup(QLatin1String("general"));
@@ -755,8 +755,8 @@ void SettingsDialog::reject()
         QApplication::setStyle(QStyleFactory::create(m_last_style));
     }
 
-    if (m_current_toolbar_size != cbToolbarSize->currentText())
-        BrowserApplication::instance()->mainWindow()->setToolbarSizes(m_current_toolbar_size.remove("%").toInt());
+    if (BrowserApplication::instance()->mainWindow()->toolbarSizes() != cbToolbarSize->currentText().remove("%").toInt())
+        BrowserApplication::instance()->mainWindow()->setToolbarSizes();
 
     QDialog::reject();
 }
