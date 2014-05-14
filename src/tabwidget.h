@@ -42,6 +42,7 @@
 #define TABWIDGET_H
 
 #include "tabbar.h"
+#include "browsermainwindow.h"
 
 #include <QtCore/QUrl>
 #include <QtGui/QTabWidget>
@@ -83,7 +84,7 @@ public:
         NewTab
     };
 
-    TabWidget(QWidget *parent = 0);
+    TabWidget(BrowserMainWindow *parent = 0);
     TabBar *tabBar() { return m_tabBar; }
     void clear();
     void addWebAction(QAction *action, QWebPage::WebAction webAction);
@@ -105,6 +106,7 @@ public:
     bool restoreState(const QByteArray &state);
 
     void prevSelectedTab();
+    BrowserMainWindow * mainWindow() { return parentMainWindow; }
 
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event);
@@ -156,6 +158,7 @@ private:
 
     QStackedWidget *m_lineEdits;
     TabBar *m_tabBar;
+    BrowserMainWindow *parentMainWindow;
 };
 
 #endif // TABWIDGET_H

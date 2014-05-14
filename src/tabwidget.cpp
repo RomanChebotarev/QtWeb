@@ -66,7 +66,7 @@
 #include <QStyle>
 
 
-TabWidget::TabWidget(QWidget *parent)
+TabWidget::TabWidget(BrowserMainWindow *parent)
     : QTabWidget(parent)
     , m_recentlyClosedTabsAction(0)
     , m_newTabAction(0)
@@ -78,6 +78,7 @@ TabWidget::TabWidget(QWidget *parent)
     , m_prevSelectedTabMark(-1)
     , m_lineEdits(0)
     , m_tabBar(new TabBar(this))
+    , parentMainWindow(parent)
 {
     setElideMode(Qt::ElideRight);
     
@@ -258,7 +259,7 @@ void TabWidget::currentChanged(int index)
     emit showStatusBarMessage(webView->lastStatusBarText());
     webView->setFocus();
     // Configuring tab-order for main-window. Address line <=> Search line
-    BrowserApplication::instance()->mainWindow()->setTabStop(lineEdit(index));
+    mainWindow()->setTabStop(lineEdit(index));
 }
 
 QAction *TabWidget::newTabAction() const
