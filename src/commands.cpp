@@ -19,6 +19,7 @@
 
 #include "commands.h"
 #include <QStringList>
+#include <QDebug>   //FIXME - very ugly code for all shortcuts system, need mass refactoring
 
 
 MenuCommands::MenuCommands(void)
@@ -361,6 +362,25 @@ bool    MenuCommands::SetShortcuts(int ind, QString shorts)
     QString shortcut = m_data.value(key + QString("_%1").arg(++i) ).toString();
     if (!shortcut.isEmpty())
         m_data.setValue(key + QString("_%1").arg(i), "");
+
+
+    foreach(QString descr, m_data.allKeys())
+    {
+        const QString & shc = m_data.value(descr).toString();
+        if(shc.isEmpty())
+            continue;
+
+        foreach(QString d, m_data.allKeys())
+        {
+            if(d == descr)  //  Same hotkey
+                continue;
+            if(m_data.value(d) == shc)
+            {
+                qDebug() << "Shortcut (" << m_data.value(descr) << " & " << shc << ") ' "<< descr << "' dupe with shortcut '" << d << "'";
+                return false;
+            }
+        }
+    }
 
     return true;
 }
