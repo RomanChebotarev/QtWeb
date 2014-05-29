@@ -50,6 +50,8 @@ class QUrlInfo;
 #include <QDateTime>
 #include <QtWebKit/QWebView>
 #include <QtWebKit/QWebHitTestResult>
+#include <QtGui/QMouseEvent>
+
 
 class WebPage;
 
@@ -76,7 +78,7 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
-    void contextMenuEvent(QContextMenuEvent *event);
+    void contextMenuEvent(QContextMenuEvent *);
     void wheelEvent(QWheelEvent *event);
     void applyEncoding();
 
@@ -103,7 +105,6 @@ private:
     QPoint  m_gestureStartPos;
     bool    m_gestureStarted;
     QUrl    m_gestureUrl;
-    QDateTime m_gestureTime;
 
     WebPage *m_page;
     bool    m_font_resizing;
@@ -125,6 +126,13 @@ private:
 private:
     void ftpCheckDisconnect();
     void ftpDownloadFile(const QUrl & /* url */, QString filename );
+
+    void gestureBegin(QMouseEvent * event);
+    void gestureEnd() { m_gestureStarted = false; }
+    bool gestureRunning() { return m_gestureStarted; }
+    bool processGesture(QMouseEvent *event);
+
+    static const int gestureThreshold = 5;
 
 private slots:
     void ftpCancelDownload();

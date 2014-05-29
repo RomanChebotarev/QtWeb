@@ -52,7 +52,6 @@
 #include <QtGui/QClipboard>
 #include <QtGui/QMenu>
 #include <QtGui/QMessageBox>
-#include <QtGui/QMouseEvent>
 #include <QProgressDialog>
 #include <QFileDialog>
 #include <QtNetwork>
@@ -131,112 +130,10 @@ void WebView::slotInspectElement()
         page()->triggerAction(QWebPage::InspectElement, false);
 }
 
-void WebView::contextMenuEvent(QContextMenuEvent *event)
+void WebView::contextMenuEvent(QContextMenuEvent *)
 {
-    // do not display the context menu if gesture was previously invoked
-    if (m_gestureTime.isValid() && !m_gestureTime.isNull())
-    { 
-        int secs = m_gestureTime.secsTo(QDateTime::currentDateTime());
-        if (secs >= 0 && secs <=1)
-            return;
-    }
-
-    QMenu menu(this);
-
-    QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
-    m_hitResult = r;
-    if (!r.linkUrl().isEmpty()) 
-    {
-        MenuCommands cmds;
-
-        QAction* newwin = new QAction(pageAction(QWebPage::OpenLinkInNewWindow)->text(), this);
-        connect(newwin, SIGNAL(triggered()), this, SLOT(openLinkInNewWin()));
-        menu.addAction(newwin);
-
-        QAction* newtab = new QAction(cmds.OpenNewTabTitle(), this);
-        newtab->setShortcuts(cmds.OpenNewTabShortcuts());
-        connect(newtab, SIGNAL(triggered()), this, SLOT(openLinkInNewTab()));
-        menu.addAction(newtab);
-    
-        menu.addSeparator();
-
-        menu.addAction(pageAction(QWebPage::DownloadLinkToDisk));
-        
-        menu.addSeparator();
-        
-        menu.addAction(pageAction(QWebPage::CopyLinkToClipboard));
-
-        {
-            QAction* copyadr = new QAction(cmds.CopyAddrTitle(), this); 
-            connect(copyadr, SIGNAL(triggered()), this, SLOT(copyMailtoAddress()));
-            menu.addAction( copyadr );
-        }
-
-
-        if (page()->settings()->testAttribute(QWebSettings::DeveloperExtrasEnabled))
-        {
-            QAction* inspect = new QAction(cmds.InspectTitle(), this);
-            //inspect->setShortcuts(cmds.InspectShortcuts());
-            connect(inspect, SIGNAL(triggered()), this, SLOT(slotInspectElement()));
-            menu.addAction(inspect);
-        }
-    }
-
-    if (!r.imageUrl().isEmpty()) 
-    {
-        if (!menu.isEmpty())
-            menu.addSeparator();
-
-        menu.addAction( pageAction(QWebPage::DownloadImageToDisk));
-        menu.addAction( pageAction(QWebPage::CopyImageToClipboard));
-
-        QAction* newwin = new QAction(pageAction(QWebPage::OpenImageInNewWindow)->text(), this);
-        connect(newwin, SIGNAL(triggered()), this, SLOT(openImageInNewWin()));
-        menu.addAction(newwin);
-
-        MenuCommands cmds;
-        QAction* newtab = new QAction(cmds.OpenNewTabTitle(), this);
-        newtab->setShortcuts(cmds.OpenNewTabShortcuts());
-        connect(newtab, SIGNAL(triggered()), this, SLOT(openImageInNewTab()));
-        menu.addAction( newtab );
-
-        menu.addSeparator();
-        QAction* adblock = new QAction(cmds.OpenAdBlockTitle(), this);
-        adblock->setShortcuts(cmds.OpenAdBlockShortcuts());
-        connect(adblock, SIGNAL(triggered()), this, SLOT(adBlock()));
-        adblock->setToolTip(r.imageUrl().toString());
-        menu.addAction( adblock );
-        menu.addSeparator();
-    }
-
-    if (! (page()->settings()->testAttribute(QWebSettings::DeveloperExtrasEnabled)))
-    {
-        MenuCommands cmds;
-
-        menu.addAction(pageAction(QWebPage::Copy));
-        menu.addAction(pageAction(QWebPage::Paste));
-        menu.addAction(pageAction(QWebPage::Cut));
-        menu.addSeparator();
-
-        menu.addAction(pageAction(QWebPage::Back));
-        menu.addAction(pageAction(QWebPage::Forward));
-        menu.addAction(pageAction(QWebPage::Reload));
-        menu.addSeparator();
-
-        QAction* viewsource = new QAction(cmds.SourceTitle(), this);
-        connect(viewsource, SIGNAL(triggered()), BrowserApplication::instance()->mainWindow(), SLOT(slotViewPageSource()));
-        menu.addAction(viewsource);
-
-        
-    }
-
-    if (!menu.isEmpty()) 
-    {
-        menu.exec(mapToGlobal(event->pos()));
-        return;
-    }
-
-    QWebView::contextMenuEvent(event);
+    // Nothing. Calling context menu processed by mouseReleaseEvent()
+    return;
 }
 
 #include <QInputDialog>
@@ -479,20 +376,25 @@ void WebView::mousePressEvent(QMouseEvent *event)
     m_page->m_keyboardModifiers = event->modifiers();
     m_font_resizing = false;
     
-    // Start mouse gestures processing
-    if (event->buttons() & Qt::RightButton)
-    {
-        m_gestureStartPos = event->pos();
-        m_gestureStarted = true;
-        m_gestureUrl = QUrl();
-    }
+    // Start mouse gestures processing if needed
+    gestureBegin(event);
 
     QWebView::mousePressEvent(event);
 }
 
+void WebView::gestureBegin(QMouseEvent * event)
+{
+    if (! event->buttons() & Qt::RightButton)
+        return;
+
+    m_gestureStartPos = event->pos();
+    m_gestureUrl = QUrl();
+    m_gestureStarted = true;
+}
+
 void WebView::mouseMoveEvent(QMouseEvent *event)
 {
-    if (m_gestureStarted)
+    if (gestureRunning())
     {
         QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
         m_hitResult = r;
@@ -501,114 +403,233 @@ void WebView::mouseMoveEvent(QMouseEvent *event)
             m_gestureUrl = r.linkUrl();
         }
     }
+    QWebView::mouseMoveEvent(event);
+}
 
-    QWebView::mousePressEvent(event);
+bool WebView::processGesture(QMouseEvent * event)
+{
+    if(!gestureRunning())
+        return false;
+
+    gestureEnd();
+
+    // Check for threshold mouse moving
+    QPoint p = event->pos();
+
+    int difX = p.x() - m_gestureStartPos.x();
+    int difY = p.y() - m_gestureStartPos.y();
+
+    if (abs(difX) < gestureThreshold && abs(difY) < gestureThreshold)
+        return false;
+
+    // Start gesture processing
+    bool left(false), right(false), upper_left(false), upper_right(false),
+         down_left(false), down_right(false), down(false), up(false);
+
+    if (difX < 0 && (abs(difX / difY) >= 2))
+        left = true;
+    else
+    if (difX > 0 && (abs(difX / difY) >= 2))
+        right = true;
+    else
+    if (difY < 0 && (abs(difY / difX) >= 2))
+        up = true;
+    else
+    if (difY > 0 && ( abs(difY / difX) >= 2))
+        down = true;
+    else
+    if (difX < 0 && difY < 0 && abs(difX / difY) < 2 && abs((float)difX / (float)difY) > 0.5)
+        upper_left = true;
+    else
+    if (difX > 0 && difY < 0 && abs(difX / difY) < 2 && abs((float)difX / (float)difY) > 0.5)
+        upper_right = true;
+    else
+    if (difX > 0 && difY > 0 && abs(difX / difY) < 2 && abs((float)difX / (float)difY) > 0.5)
+        down_right = true;
+    else
+    if (difX < 0 && difY > 0 && abs(difX / difY) < 2 && abs((float)difX / (float)difY) > 0.5)
+        down_left = true;
+
+    if (left)
+    {
+        back();
+        return true;
+    }
+
+    if (right)
+    {
+        forward();
+        return true;
+    }
+
+    if (BrowserApplication::instance() &&
+            BrowserApplication::instance()->mainWindow() &&
+            BrowserApplication::instance()->mainWindow()->tabWidget())
+    {
+        BrowserMainWindow *mw = BrowserApplication::instance()->mainWindow();
+
+        if (up)
+        {
+            if (!m_gestureUrl.isEmpty())
+            {
+                mw->tabWidget()->newTab( true )->loadUrl(m_gestureUrl);
+                return true;
+            }
+            else
+                if (difX > 0)
+                    upper_right = true;
+                else
+                    upper_left = true;
+        }
+
+        if (down)
+        {
+            if (!m_gestureUrl.isEmpty())
+            {
+                mw->tabWidget()->newTab( false )->loadUrl(m_gestureUrl);
+                return true;
+            }
+            else
+                if (difX > 0)
+                    down_right = true;
+                else
+                    down_left = true;
+        }
+
+        if (upper_right)
+        {
+            mw->tabWidget()->nextTab(); // Next tab
+            return true;
+        }
+
+        if (upper_left)
+        {
+            mw->tabWidget()->previousTab(); // Prev tab
+            return true;
+        }
+
+        if (down_right)
+        {
+            mw->tabWidget()->closeTab(); // Close Tab
+            return true;
+        }
+
+        if (down_left)
+        {
+            mw->tabWidget()->prevSelectedTab(); // Previously selected tab
+            return true;
+        }
+
+    }
+    return false;
 }
 
 void WebView::mouseReleaseEvent(QMouseEvent *event)
 {
     // Complete mouse gestures processing
-    if ( m_gestureStarted )
+    if (processGesture(event))
+        return; // Gesture processed, don't show context menu and other actions
+
+    // If right mouse button released - show context menu
+    if (event->button() & Qt::RightButton)
     {
-        m_gestureStarted = false;
-        QPoint p = event->pos();
+        QMenu menu(this);
 
-        int difX = p.x() - m_gestureStartPos.x();
-        int difY = p.y() - m_gestureStartPos.y();
-        
-        if (abs(difX) >= 5 || abs(difY) >= 5 )
+        QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
+        m_hitResult = r;
+        if (!r.linkUrl().isEmpty())
         {
-            bool left(false), right(false), upper_left(false), upper_right(false), 
-                 down_left(false), down_right(false), down(false), up(false);
-            
-            if (difX < 0 && (difY == 0 || abs(difX / difY) >= 2))
-                left = true;
-            else
-            if (difX > 0 && (difY == 0 || abs(difX / difY) >= 2))
-                right = true;
-            else
-            if (difY < 0 && (difX == 0 || abs(difY / difX) >= 2))
-                up = true;
-            else
-            if (difY > 0 && (difX == 0 || abs(difY / difX) >= 2))
-                down = true;
-            else
-            if (difX < 0 && difY < 0 && abs(difX / difY) < 2 && abs((float)difX / (float)difY) > 0.5)
-                upper_left = true; 
-            else
-            if (difX > 0 && difY < 0 && abs(difX / difY) < 2 && abs((float)difX / (float)difY) > 0.5)
-                upper_right = true;
-            else
-            if (difX > 0 && difY > 0 && abs(difX / difY) < 2 && abs((float)difX / (float)difY) > 0.5)
-                down_right = true;
-            else
-            if (difX < 0 && difY > 0 && abs(difX / difY) < 2 && abs((float)difX / (float)difY) > 0.5)
-                down_left = true;
-        
-            if (left)
-                back();
-            
-            if (right)
-                forward();
+            MenuCommands cmds;
 
-            if (BrowserApplication::instance() && BrowserApplication::instance()->mainWindow() && BrowserApplication::instance()->mainWindow()->tabWidget())
+            QAction* newwin = new QAction(pageAction(QWebPage::OpenLinkInNewWindow)->text(), this);
+            connect(newwin, SIGNAL(triggered()), this, SLOT(openLinkInNewWin()));
+            menu.addAction(newwin);
+
+            QAction* newtab = new QAction(cmds.OpenNewTabTitle(), this);
+            newtab->setShortcuts(cmds.OpenNewTabShortcuts());
+            connect(newtab, SIGNAL(triggered()), this, SLOT(openLinkInNewTab()));
+            menu.addAction(newtab);
+
+            menu.addSeparator();
+
+            menu.addAction(pageAction(QWebPage::DownloadLinkToDisk));
+
+            menu.addSeparator();
+
+            menu.addAction(pageAction(QWebPage::CopyLinkToClipboard));
+
             {
-                BrowserMainWindow *mw = BrowserApplication::instance()->mainWindow();
-                    
-                if (up) 
-                {
-                    if (!m_gestureUrl.isEmpty())
-                    {
-                        mw->tabWidget()->newTab( true )->loadUrl(m_gestureUrl);
-                    }
-                    else
-                        if (difX > 0)
-                            upper_right = true;
-                        else
-                            upper_left = true;
-                }
-
-                if (down) 
-                {
-                    if (!m_gestureUrl.isEmpty())
-                    {
-                        mw->tabWidget()->newTab( false )->loadUrl(m_gestureUrl);
-                    }
-                    else
-                        if (difX > 0)
-                            down_right = true;
-                        else
-                            down_left = true;
-                }
-
-                if (upper_right)
-                {
-                    mw->tabWidget()->nextTab(); // Next tab
-                }
-
-                if (upper_left)
-                {
-                    mw->tabWidget()->previousTab(); // Prev tab
-                }
-                    
-                if (down_right)
-                {
-                    mw->tabWidget()->closeTab(); // Close Tab
-                }
-
-                if (down_left)
-                {
-                    mw->tabWidget()->prevSelectedTab(); // Previously selected tab
-                }
-
+                QAction* copyadr = new QAction(cmds.CopyAddrTitle(), this);
+                connect(copyadr, SIGNAL(triggered()), this, SLOT(copyMailtoAddress()));
+                menu.addAction( copyadr );
             }
 
-            m_gestureTime = QDateTime::currentDateTime();
+
+            if (page()->settings()->testAttribute(QWebSettings::DeveloperExtrasEnabled))
+            {
+                QAction* inspect = new QAction(cmds.InspectTitle(), this);
+                //inspect->setShortcuts(cmds.InspectShortcuts());
+                connect(inspect, SIGNAL(triggered()), this, SLOT(slotInspectElement()));
+                menu.addAction(inspect);
+            }
+        }
+
+        if (!r.imageUrl().isEmpty())
+        {
+            if (!menu.isEmpty())
+                menu.addSeparator();
+
+            menu.addAction( pageAction(QWebPage::DownloadImageToDisk));
+            menu.addAction( pageAction(QWebPage::CopyImageToClipboard));
+
+            QAction* newwin = new QAction(pageAction(QWebPage::OpenImageInNewWindow)->text(), this);
+            connect(newwin, SIGNAL(triggered()), this, SLOT(openImageInNewWin()));
+            menu.addAction(newwin);
+
+            MenuCommands cmds;
+            QAction* newtab = new QAction(cmds.OpenNewTabTitle(), this);
+            newtab->setShortcuts(cmds.OpenNewTabShortcuts());
+            connect(newtab, SIGNAL(triggered()), this, SLOT(openImageInNewTab()));
+            menu.addAction( newtab );
+
+            menu.addSeparator();
+            QAction* adblock = new QAction(cmds.OpenAdBlockTitle(), this);
+            adblock->setShortcuts(cmds.OpenAdBlockShortcuts());
+            connect(adblock, SIGNAL(triggered()), this, SLOT(adBlock()));
+            adblock->setToolTip(r.imageUrl().toString());
+            menu.addAction( adblock );
+            menu.addSeparator();
+        }
+
+        if (! (page()->settings()->testAttribute(QWebSettings::DeveloperExtrasEnabled)))
+        {
+            MenuCommands cmds;
+
+            menu.addAction(pageAction(QWebPage::Copy));
+            menu.addAction(pageAction(QWebPage::Paste));
+            menu.addAction(pageAction(QWebPage::Cut));
+            menu.addSeparator();
+
+            menu.addAction(pageAction(QWebPage::Back));
+            menu.addAction(pageAction(QWebPage::Forward));
+            menu.addAction(pageAction(QWebPage::Reload));
+            menu.addSeparator();
+
+            QAction* viewsource = new QAction(cmds.SourceTitle(), this);
+            connect(viewsource, SIGNAL(triggered()), BrowserApplication::instance()->mainWindow(), SLOT(slotViewPageSource()));
+            menu.addAction(viewsource);
+
+
+        }
+
+        if (!menu.isEmpty())
+        {
+            menu.exec(mapToGlobal(event->pos()));
             return;
         }
     }
 
-    if (/*!event->isAccepted() &&*/ ! link_under_cursor && (m_page->m_pressedButtons & Qt::MidButton))
+    if (! link_under_cursor && (m_page->m_pressedButtons & Qt::MidButton))
     {
         QUrl url(QApplication::clipboard()->text(QClipboard::Selection));
         if (!url.isEmpty() && url.isValid() && !url.scheme().isEmpty()) 
@@ -619,14 +640,14 @@ void WebView::mouseReleaseEvent(QMouseEvent *event)
         }
     }
 
-    if (/*!event->isAccepted() &&*/ (m_page->m_pressedButtons & Qt::XButton1))
+    if (m_page->m_pressedButtons & Qt::XButton1)
     {
         back();
         event->accept();
         return;
     }
 
-    if (/*!event->isAccepted() &&*/ (m_page->m_pressedButtons & Qt::XButton2))
+    if (m_page->m_pressedButtons & Qt::XButton2)
     {
         forward();
         event->accept();
