@@ -71,6 +71,7 @@ WebView::WebView(QWidget* parent)
     , m_encoding_in_progress(false)
     , m_ssl_errors_detected(false)
     , link_under_cursor(false)
+    , contextMenuRequested(false)
 {
     setPage(m_page);
     connect(page(), SIGNAL(statusBarMessage(const QString&)),
@@ -132,8 +133,8 @@ void WebView::slotInspectElement()
 
 void WebView::contextMenuEvent(QContextMenuEvent *)
 {
-    // Nothing. Calling context menu processed by mouseReleaseEvent()
-    return;
+    // Set flag for show context menu on right mouse button released
+    contextMenuRequested = true;
 }
 
 #include <QInputDialog>
@@ -526,13 +527,21 @@ bool WebView::processGesture(QMouseEvent * event)
 
 void WebView::mouseReleaseEvent(QMouseEvent *event)
 {
-    // Complete mouse gestures processing
-    if (processGesture(event))
-        return; // Gesture processed, don't show context menu and other actions
 
     // If right mouse button released - show context menu
     if (event->button() & Qt::RightButton)
     {
+        // Complete mouse gestures processing
+        if (processGesture(event))
+        {
+            contextMenuRequested = false;
+            return; // Gesture processed, don't show context menu and other actions
+        }
+
+        if(!contextMenuRequested)
+            return;
+
+        contextMenuRequested = false;
         QMenu menu(this);
 
         QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
@@ -618,8 +627,6 @@ void WebView::mouseReleaseEvent(QMouseEvent *event)
             QAction* viewsource = new QAction(cmds.SourceTitle(), this);
             connect(viewsource, SIGNAL(triggered()), BrowserApplication::instance()->mainWindow(), SLOT(slotViewPageSource()));
             menu.addAction(viewsource);
-
-
         }
 
         if (!menu.isEmpty())

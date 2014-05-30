@@ -123,6 +123,8 @@ private:
     QHash<QString, bool>    m_ftpIsDirectory;
     QString                 m_ftpCurrentPath;
 
+    bool    contextMenuRequested;
+
 private:
     void ftpCheckDisconnect();
     void ftpDownloadFile(const QUrl & /* url */, QString filename );
