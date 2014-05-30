@@ -1334,7 +1334,7 @@ Do you want to reload all pages?</source>
     </message>
     <message>
         <source>Open in New Tab</source>
-        <translation>Открыть в Новой Вкладке</translation>
+        <translation type="unfinished">Открыть в новой вкладке</translation>
     </message>
     <message>
         <source>Ad Block...</source>

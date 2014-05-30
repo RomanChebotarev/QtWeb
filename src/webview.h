@@ -92,7 +92,7 @@ private slots:
     void openLinkInNewWin();
     void openImageInNewTab();
     void openImageInNewWin();
-    void copyMailtoAddress();
+    void copyMailAddrToClipboard();
     void clickedUrl(const QUrl &url);
     void adBlock();
 

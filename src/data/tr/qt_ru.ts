@@ -1337,4 +1337,52 @@
         <translation>Что это?</translation>
     </message>
 </context>
+<context>
+    <name>QWebPage</name>
+    <message>
+        <location filename="../src/gui/kernel/qwebpage.cpp"/>
+        <source>Copy Link</source>
+        <translation>Копировать ссылку</translation>
+    </message>
+</context>
+<context>
+    <name>QWebPage</name>
+    <message>
+        <location filename="../src/gui/kernel/qwebpage.cpp"/>
+        <source>Open in New Window</source>
+        <translation>Открыть в новом окне</translation>
+    </message>
+</context>
+<context>
+    <name>QWebPage</name>
+    <message>
+        <location filename="../src/gui/kernel/qwebpage.cpp"/>
+        <source>Reload</source>
+        <translation>Обновить</translation>
+    </message>
+</context>
+<context>
+    <name>QWebPage</name>
+    <message>
+        <location filename="../src/gui/kernel/qwebpage.cpp"/>
+        <source>Save Link...</source>
+        <translation>Сохранить ссылку как...</translation>
+    </message>
+</context>
+<context>
+    <name>QWebPage</name>
+    <message>
+        <location filename="../src/gui/kernel/qwebpage.cpp"/>
+        <source>Go Forward</source>
+        <translation>Вперёд</translation>
+    </message>
+</context>
+<context>
+    <name>QWebPage</name>
+    <message>
+        <location filename="../src/gui/kernel/qwebpage.cpp"/>
+        <source>Go Back</source>
+        <translation>Назад</translation>
+    </message>
+</context>
 </TS>

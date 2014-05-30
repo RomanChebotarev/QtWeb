@@ -154,25 +154,14 @@ void WebView::adBlock()
 }
 
 
-void WebView::copyMailtoAddress()
+void WebView::copyMailAddrToClipboard()
 {
     if (!m_hitResult.isNull() && !m_hitResult.linkUrl().isEmpty())
     {
-        if (m_hitResult.linkUrl().scheme() == "mailto")
+        if (m_hitResult.linkUrl().scheme() == "mailto") // Remove "mailto:" prefix
             QApplication::clipboard()->setText( m_hitResult.linkUrl().encodedPath() );
-        else
-        {
-            if (!m_hitResult.linkUrl().scheme().isEmpty())
-            {
-                QString s = m_hitResult.linkUrl().toString(QUrl::RemoveScheme | QUrl::StripTrailingSlash | 
-                    QUrl::RemoveUserInfo | QUrl::RemoveQuery);
-                if (s.indexOf("//") == 0)
-                    s = s.remove(0,2);
-                QApplication::clipboard()->setText( s );
-            }
-            else
-                QApplication::clipboard()->setText( m_hitResult.linkUrl().toString() );
-        }
+        else    // Copy full address include scheme, path, query, etc without any changes
+            QApplication::clipboard()->setText( m_hitResult.linkUrl().toString() );
     }
 }
 
@@ -196,7 +185,7 @@ void WebView::openImageInNewTab()
 
 void WebView::openLinkInNewTab()
 {
-        m_page->m_openAction = WebPage::OpenNewTab;
+    m_page->m_openAction = WebPage::OpenNewTab;
     pageAction(QWebPage::OpenLinkInNewWindow)->trigger();
 }
 
@@ -550,29 +539,31 @@ void WebView::mouseReleaseEvent(QMouseEvent *event)
         {
             MenuCommands cmds;
 
-            QAction* newwin = new QAction(pageAction(QWebPage::OpenLinkInNewWindow)->text(), this);
-            connect(newwin, SIGNAL(triggered()), this, SLOT(openLinkInNewWin()));
-            menu.addAction(newwin);
-
-            QAction* newtab = new QAction(cmds.OpenNewTabTitle(), this);
-            newtab->setShortcuts(cmds.OpenNewTabShortcuts());
-            connect(newtab, SIGNAL(triggered()), this, SLOT(openLinkInNewTab()));
-            menu.addAction(newtab);
-
-            menu.addSeparator();
-
-            menu.addAction(pageAction(QWebPage::DownloadLinkToDisk));
-
-            menu.addSeparator();
-
-            menu.addAction(pageAction(QWebPage::CopyLinkToClipboard));
-
+            // Check - e-mail or other link?
+            if(r.linkUrl().scheme() == "mailto")
             {
                 QAction* copyadr = new QAction(cmds.CopyAddrTitle(), this);
-                connect(copyadr, SIGNAL(triggered()), this, SLOT(copyMailtoAddress()));
+                copyadr->deleteLater();
+                connect(copyadr, SIGNAL(triggered()), this, SLOT(copyMailAddrToClipboard()));
                 menu.addAction( copyadr );
             }
+            else
+            {
+                menu.addAction(pageAction(QWebPage::CopyLinkToClipboard));
+                menu.addAction(pageAction(QWebPage::DownloadLinkToDisk));
 
+                menu.addSeparator();
+
+                QAction* newwin = new QAction(pageAction(QWebPage::OpenLinkInNewWindow)->text(), this);
+                connect(newwin, SIGNAL(triggered()), this, SLOT(openLinkInNewWin()));
+                menu.addAction(newwin);
+
+                QAction* newtab = new QAction(cmds.OpenNewTabTitle(), this);
+                newtab->setShortcuts(cmds.OpenNewTabShortcuts());
+                connect(newtab, SIGNAL(triggered()), this, SLOT(openLinkInNewTab()));
+                menu.addAction(newtab);
+            }
+            menu.addSeparator();
 
             if (page()->settings()->testAttribute(QWebSettings::DeveloperExtrasEnabled))
             {
