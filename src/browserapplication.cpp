@@ -59,14 +59,14 @@
 #include <QtCore/QTranslator>
 #include <QtCore/QReadWriteLock>
 
-#include <QtGui/QDesktopServices>
-#include <QtGui/QFileOpenEvent>
+#include <QDesktopServices>
+#include <QFileOpenEvent>
 
 #include <QtNetwork/QLocalServer>
 #include <QtNetwork/QLocalSocket>
 #include <QtNetwork/QNetworkProxy>
 
-#include <QtWebKit/QWebSettings>
+#include <QWebSettings>
 #include <QStyleFactory>
 #include <QtCore/QDebug>
 #include <QMessageBox>
@@ -174,7 +174,7 @@ void BrowserApplication::CheckSetTranslator()
     }
 
     QSettings settings;
-    settings.beginGroup(QLatin1String("general"));
+    settings.beginGroup(QLatin1String("General"));
     QString language = settings.value("Language", "").toString();
 
     if (language.isEmpty())
@@ -635,7 +635,7 @@ void BrowserApplication::newLocalSocketConnection()
     stream >> url;
     if (!url.isEmpty()) {
         QSettings settings;
-        settings.beginGroup(QLatin1String("general"));
+        settings.beginGroup(QLatin1String("General"));
         int openLinksIn = settings.value(QLatin1String("openLinksIn"), 0).toInt();
         settings.endGroup();
         if (openLinksIn == 1 || m_mainWindows.isEmpty())
@@ -970,8 +970,7 @@ QString BrowserApplication::dataLocation()
         return QCoreApplication::applicationDirPath()+ "/QtWebCache";
     }
     else
-        return QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-        // return QStandardPaths::writableLocation(QStandardPaths::DataLocation); // For Qt 5.*
+        return QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 }
 
 QString BrowserApplication::downloadsLocation(bool create_dir)
@@ -981,8 +980,8 @@ QString BrowserApplication::downloadsLocation(bool create_dir)
     if (s_portableRunMode)
         base = QCoreApplication::applicationDirPath();
     else
-        base = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) ;
-        // base = QStandardPaths::writableLocation(QStandardPaths::DataLocation);   // For Qt 5.*
+        base = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+
 
     QString downs(tr("Downloads"));
 

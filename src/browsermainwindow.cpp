@@ -61,22 +61,22 @@
 #include <QtCore/QMetaEnum>
 #include <QTextCodec>
 #include <QProcess>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QFileDialog>
-#include <QtGui/QPlainTextEdit>
-#include <QtGui/QPrintDialog>
-#include <QtGui/QPrinter>
-#include <QtGui/QMenuBar>
-#include <QtGui/QMessageBox>
-#include <QtGui/QStatusBar>
-#include <QtGui/QToolBar>
-#include <QtGui/QInputDialog>
-#include <QtGui/QDesktopServices>
+#include <QDesktopWidget>
+#include <QFileDialog>
+#include <QPlainTextEdit>
+#include <QPrintDialog>
+#include <QPrinter>
+#include <QMenuBar>
+#include <QMessageBox>
+#include <QStatusBar>
+#include <QToolBar>
+#include <QInputDialog>
+#include <QDesktopServices>
 #include <QThread>
 #include <QFile>
 #include <QStyleFactory>
-#include <QtWebKit/QWebFrame>
-#include <QtWebKit/QWebHistory>
+#include <QWebFrame>
+#include <QWebHistory>
 #include <tabwidget.h>
 #include <QtCore/QDebug>
 #include <networkaccessmanager.h>
@@ -370,7 +370,7 @@ void BrowserMainWindow::loadSettings()
 {
     QSettings settings;
 
-    settings.beginGroup(QLatin1String("general"));
+    settings.beginGroup(QLatin1String("General"));
     bool bMenu = settings.value(QLatin1String("ShowMenu"), true).toBool();
     menuBar()->setVisible(bMenu);
     m_showMenuIcons = !settings.value(QLatin1String("hideMenuIcons"), false).toBool();
@@ -1518,7 +1518,7 @@ void BrowserMainWindow::slotViewMenubar()
         settings.setValue(QLatin1String("hide_menu_confirmation"), false);
         settings.endGroup();
     
-        settings.beginGroup(QLatin1String("general"));
+        settings.beginGroup(QLatin1String("General"));
         settings.setValue(QLatin1String("ShowMenu"), false);
         settings.endGroup();
 
@@ -1527,7 +1527,7 @@ void BrowserMainWindow::slotViewMenubar()
     } 
     else 
     {
-        settings.beginGroup(QLatin1String("general"));
+        settings.beginGroup(QLatin1String("General"));
         settings.setValue(QLatin1String("ShowMenu"), true);
         settings.endGroup();
 
@@ -1747,7 +1747,7 @@ void BrowserMainWindow::slotFilePrint()
     printRequested(currentTab()->page()->mainFrame());
 }
 
-#include <QtGui/QPrintPreviewDialog>
+#include <QPrintPreviewDialog>
 
 void BrowserMainWindow::slotFilePrintPreview()
 {
@@ -2085,7 +2085,7 @@ void BrowserMainWindow::slotToggleInspector(bool enable)
 {
     QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, enable);
     QSettings settings;
-    settings.beginGroup(QLatin1String("general"));
+    settings.beginGroup(QLatin1String("General"));
     settings.setValue(QLatin1String("EnableWebInspector"), enable);
     
     if (enable) {

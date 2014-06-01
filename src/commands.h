@@ -312,7 +312,7 @@ public:
     QList<QKeySequence> EmptyShortcuts() const      { return loadShortcuts( EmptyKey(), QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_M) ); }
 
     QString             ResetKey() const                { return QLatin1String("Reset"); }
-    QString             ResetTitle() const          { return m_data.value( ResetKey() , tr("&Reset QtWeb...")).toString(); }
+    QString             ResetTitle() const          { return m_data.value( ResetKey() , tr("&Reset <QWeb...")).toString(); }
     QList<QKeySequence> ResetShortcuts() const      { return loadShortcuts( ResetKey(), QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_R) ); }
 
     QString             FullResetKey() const            { return QLatin1String("FullReset"); }
@@ -414,7 +414,7 @@ public:
     QList<QKeySequence> UpdatesShortcuts() const        { return  loadShortcuts( UpdatesKey()); }
 
     QString             AboutKey() const                { return QLatin1String("About"); }
-    QString             AboutTitle() const          { return m_data.value(AboutKey() , tr("&About QtWeb")).toString(); }
+    QString             AboutTitle() const          { return m_data.value(AboutKey() , tr("&About <QWeb")).toString(); }
     QList<QKeySequence> AboutShortcuts() const      { return  loadShortcuts( AboutKey()); }
 
 protected:

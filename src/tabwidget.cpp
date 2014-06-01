@@ -48,15 +48,15 @@
 #include "webpage.h"
 #include "commands.h"
 
-#include <QtGui/QClipboard>
-#include <QtGui/QCompleter>
-#include <QtGui/QListView>
-#include <QtGui/QMenu>
-#include <QtGui/QMessageBox>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QStackedWidget>
-#include <QtGui/QStyle>
-#include <QtGui/QToolButton>
+#include <QClipboard>
+#include <QCompleter>
+#include <QListView>
+#include <QMenu>
+#include <QMessageBox>
+#include <QMouseEvent>
+#include <QStackedWidget>
+#include <QStyle>
+#include <QToolButton>
 #include <QFile>
 #include <QtCore/QDebug>
 #include <QBuffer>
@@ -102,7 +102,7 @@ TabWidget::TabWidget(BrowserMainWindow *parent)
 
     // Actions
     QSettings settings;
-    settings.beginGroup(QLatin1String("general"));
+    settings.beginGroup(QLatin1String("General"));
     bool hide_icons = settings.value(QLatin1String("hideMenuIcons"), false).toBool();
     settings.endGroup();    
 

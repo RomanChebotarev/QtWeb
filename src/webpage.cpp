@@ -48,14 +48,14 @@
 #include "webview.h"
 #include "autocomplete.h"
 
-#include <QtGui/QClipboard>
-#include <QtGui/QMenu>
-#include <QtGui/QMessageBox>
-#include <QtGui/QMouseEvent>
+#include <QClipboard>
+#include <QMenu>
+#include <QMessageBox>
+#include <QMouseEvent>
 #include <QProgressDialog>
 #include <QFileDialog>
 #include <QtNetwork>
-#include <QtWebKit/QWebHitTestResult>
+#include <QWebHitTestResult>
 #include <qdesktopservices.h>
 #include <QtUiTools/QUiLoader>
 #include <QRegExp>
@@ -194,7 +194,7 @@ bool WebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &r
     if (type == QWebPage::NavigationTypeLinkClicked && (m_keyboardModifiers & Qt::ControlModifier || m_pressedButtons == Qt::MidButton)) 
     {
             QSettings settings;
-            settings.beginGroup(QLatin1String("general"));
+            settings.beginGroup(QLatin1String("General"));
             int openLinksIn = settings.value(QLatin1String("openLinksIn"), 0).toInt();
 
             bool newWindow = (m_keyboardModifiers & Qt::AltModifier);
@@ -222,7 +222,7 @@ bool WebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &r
     if (frame == NULL && type == QWebPage::NavigationTypeLinkClicked) // Check for open links in tabs
     {
         QSettings settings;
-        settings.beginGroup(QLatin1String("general"));
+        settings.beginGroup(QLatin1String("General"));
         int openLinksIn = settings.value(QLatin1String("openLinksIn"), 0).toInt();
         if (openLinksIn == 0 && !(m_keyboardModifiers & Qt::AltModifier))
         {

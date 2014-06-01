@@ -49,9 +49,9 @@
 #include "autocomplete.h"
 #include "commands.h"
 
-#include <QtGui/QClipboard>
-#include <QtGui/QMenu>
-#include <QtGui/QMessageBox>
+#include <QClipboard>
+#include <QMenu>
+#include <QMessageBox>
 #include <QProgressDialog>
 #include <QFileDialog>
 #include <QtNetwork>
@@ -59,7 +59,6 @@
 
 #include <QtCore/QDebug>
 #include <QtCore/QBuffer>
-
 
 WebView::WebView(QWidget* parent)   
     : QWebView(parent)
@@ -98,12 +97,14 @@ WebView::WebView(QWidget* parent)
             this, SLOT(downloadRequested(const QNetworkRequest &)));
     page()->setForwardUnsupportedContent(true);
 
+#if FTP_ENABLE
     ////////////////////////////////////////////////////////
     // AC: FTP impl
     m_ftp = NULL;
     m_ftpFile = NULL;
     m_ftpProgressDialog = new QProgressDialog(this);
     connect(m_ftpProgressDialog, SIGNAL(canceled()), this, SLOT(ftpCancelDownload()));
+#endif
 
     QSettings settings;
     settings.beginGroup(QLatin1String("websettings"));
@@ -159,7 +160,7 @@ void WebView::copyMailAddrToClipboard()
     if (!m_hitResult.isNull() && !m_hitResult.linkUrl().isEmpty())
     {
         if (m_hitResult.linkUrl().scheme() == "mailto") // Remove "mailto:" prefix
-            QApplication::clipboard()->setText( m_hitResult.linkUrl().encodedPath() );
+            QApplication::clipboard()->setText( m_hitResult.linkUrl().toEncoded());
         else    // Copy full address include scheme, path, query, etc without any changes
             QApplication::clipboard()->setText( m_hitResult.linkUrl().toString() );
     }
@@ -231,7 +232,7 @@ void WebView::applyEncoding()
 
         QString html = mainframe->toHtml();
 
-        QTextCodec *codec = QTextCodec::codecForName( enc.toAscii() );
+        QTextCodec *codec = QTextCodec::codecForName( enc.toLatin1() );
         if (!codec)
             return;
 
@@ -242,14 +243,14 @@ void WebView::applyEncoding()
         m_encoding_in_progress = true;
         m_current_encoding = enc;
         m_current_encoding_url = url();
-        QString output = decoder->toUnicode(html.toAscii());
+        QString output = decoder->toUnicode(html.toLatin1());
         mainframe->setHtml(output, mainframe->url());
 
         QList<QWebFrame *> children = mainframe->childFrames();
         foreach(QWebFrame *frame, children)
         {
             html = frame->toHtml();
-            output = decoder->toUnicode(html.toAscii());
+            output = decoder->toUnicode(html.toLatin1());
             frame->setHtml(output, frame->url());
         }
         m_encoding_in_progress = false;
@@ -705,13 +706,16 @@ void WebView::downloadRequested(const QNetworkRequest &request)
 
 void WebView::ftpCancelDownload()
 {
+#if FTP_ENABLE
     if (m_ftp)
         m_ftp->abort();
+#endif
 }
 
 
 void WebView::ftpCheckDisconnect()
 {
+#if FTP_ENABLE
     if (m_ftp)
     {
         m_ftp->abort();
@@ -719,10 +723,12 @@ void WebView::ftpCheckDisconnect()
         m_ftp = NULL;
         setCursor(Qt::ArrowCursor);
     }
+#endif
 }
 
 void WebView::loadFtpUrl(const QUrl &url)
 {
+#if FTP_ENABLE
     m_is_loading = true;
 
     m_ftpHtml.clear();
@@ -776,10 +782,12 @@ void WebView::loadFtpUrl(const QUrl &url)
     }
 
     setStatusBarText(tr("Connecting to FTP server %1...").arg(url.toString()));
+#endif
 }
 
 void WebView::ftpDownloadFile(const QUrl & /* TODO need remove: url */, QString fileName )
 {
+#if FTP_ENABLE
     if (!m_ftp)
         return;
 
@@ -817,11 +825,13 @@ void WebView::ftpDownloadFile(const QUrl & /* TODO need remove: url */, QString 
     m_ftpProgressDialog->setLabelText(QString("&nbsp;<br>" + tr("Downloading <b>%1</b>")).arg(fn));
     m_ftpProgressDialog->setWindowTitle(tr("FTP Download"));
     m_ftpProgressDialog->setModal(true);
+#endif
 }
 
 
 void WebView::ftpCommandFinished(int /* TODO need remove: res */, bool error)
 {
+#if FTP_ENABLE
     setCursor(Qt::ArrowCursor);
 
     if (!m_ftp)
@@ -911,11 +921,13 @@ void WebView::ftpCommandFinished(int /* TODO need remove: res */, bool error)
     }
 
     urlChanged(m_initialUrl);
+#endif
 }
 
 
 void WebView::ftpAddToList(const QUrlInfo &urlInfo)
 {
+#if FTP_ENABLE
     m_ftpHtml += "<tr><td>" + (urlInfo.isDir() ? QString("DIR") : QString("")) +  "</td>"; 
     m_ftpHtml += "<td>" + (urlInfo.isDir() ? QString("<b>") : QString("")) + 
         (urlInfo.isDir() ? QString("<a href=\"" + m_initialUrl.toString() + (m_initialUrl.toString().right(1) == "/" ? QString(""): QString("/"))
@@ -929,15 +941,17 @@ void WebView::ftpAddToList(const QUrlInfo &urlInfo)
         (!urlInfo.isDir() ? QString("GET FILE</a>") : QString("")) + "</td></tr>";
 
     m_ftpIsDirectory[urlInfo.name()] = urlInfo.isDir();
-
+#endif
 }
 
 void WebView::ftpUpdateDataTransferProgress(qint64 readBytes,
                                            qint64 totalBytes)
 {
+#if FTP_ENABLE
     if (m_ftpProgressDialog)
     {
         m_ftpProgressDialog->setMaximum(totalBytes);
         m_ftpProgressDialog->setValue(readBytes);
     }
+#endif
 }

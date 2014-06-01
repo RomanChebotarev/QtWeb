@@ -41,12 +41,12 @@
 #ifndef BROWSERAPPLICATION_H
 #define BROWSERAPPLICATION_H
 
-#include <QtGui/QApplication>
+#include <QApplication>
 
 #include <QtCore/QUrl>
 #include <QtCore/QPointer>
 
-#include <QtGui/QIcon>
+#include <QIcon>
 #include <QtNetwork/QNetworkAccessManager>
 
 QT_BEGIN_NAMESPACE

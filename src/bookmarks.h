@@ -27,7 +27,7 @@
 #include <QtCore/QAbstractItemModel>
 #include <qtoolbutton.h>
 
-#include <QtGui/QUndoCommand>
+#include <QUndoCommand>
 
 /*!
     Bookmark manager, owner of the bookmarks, loads, saves and basic tasks
@@ -141,7 +141,7 @@ private:
 /*!
     BookmarksModel is a QAbstractItemModel wrapper around the BookmarkManager
   */
-#include <QtGui/QIcon>
+#include <QIcon>
 class BookmarksModel : public QAbstractItemModel
 {
     Q_OBJECT
@@ -215,7 +215,7 @@ private:
     Proxy model that filters out the bookmarks so only the folders
     are left behind.  Used in the add bookmark dialog combobox.
  */
-#include <QtGui/QSortFilterProxyModel>
+#include <QSortFilterProxyModel>
 class AddBookmarkProxyModel : public QSortFilterProxyModel
 {
     Q_OBJECT
@@ -277,7 +277,7 @@ private:
     TreeProxyModel *m_proxyModel;
 };
 
-#include <QtGui/QToolBar>
+#include <QToolBar>
 #include <tabwidget.h>
 
 class BookmarksToolBar : public QToolBar

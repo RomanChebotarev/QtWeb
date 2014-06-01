@@ -52,10 +52,14 @@
 #include "tabbar.h"
 
 #include <QtCore/QSettings>
-#include <QtGui/QtGui>
-#include <QtWebKit/QtWebKit>
+#include <QtGui>
+#include <QtWebKit>
 #include <QSysInfo>
 #include <QInputDialog>
+#include <QStyleFactory>
+#include <QFontDialog>
+#include <QMessageBox>
+#include <QFileDialog>
 
 int SettingsDialog::cbToolbarSizeDefaultIndex = 5;
 
@@ -239,6 +243,7 @@ QString defaultHome = QLatin1String("http://www.qtweb.net/");
 void SettingsDialog::loadFromSettings()
 {
     QSettings settings;
+    qDebug() << "Settings: " << settings.fileName();
     settings.beginGroup(QLatin1String("MainWindow"));
 
     bool bDownloadAudioVideo = settings.value(QLatin1String("downloadAudioVideo"), (bool)(comboBoxAV->currentIndex()) ).toBool();
@@ -298,7 +303,7 @@ void SettingsDialog::loadFromSettings()
 
     settings.endGroup();
 
-    settings.beginGroup(QLatin1String("general"));
+    settings.beginGroup(QLatin1String("General"));
     openLinksIn->setCurrentIndex(settings.value(QLatin1String("openLinksIn"), openLinksIn->currentIndex()).toInt());
 
     bool bEnableInspector = settings.value(QLatin1String("EnableWebInspector"), false).toBool();
@@ -334,8 +339,9 @@ void SettingsDialog::loadFromSettings()
 
     // Appearance
     settings.beginGroup(QLatin1String("websettings"));
-    fixedFont = qVariantValue<QFont>(settings.value(QLatin1String("fixedFont"), fixedFont));
-    standardFont = qVariantValue<QFont>(settings.value(QLatin1String("standardFont"), standardFont));
+    fixedFont = settings.value(QLatin1String("fixedFont"), fixedFont).value<QFont>();
+    standardFont = settings.value(QLatin1String("standardFont"), standardFont).value<QFont>();
+
 
     standardLabel->setText(QString(QLatin1String("%1 %2")).arg(standardFont.family()).arg(standardFont.pointSize()));
     fixedLabel->setText(QString(QLatin1String("%1 %2")).arg(fixedFont.family()).arg(fixedFont.pointSize()));
@@ -489,7 +495,7 @@ void SettingsDialog::saveToSettings()
 
     settings.endGroup();
 
-    settings.beginGroup(QLatin1String("general"));
+    settings.beginGroup(QLatin1String("General"));
     settings.setValue(QLatin1String("openLinksIn"), openLinksIn->currentIndex());
     switch(comboMainMenu->currentIndex())
     {

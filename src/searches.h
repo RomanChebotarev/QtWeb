@@ -22,7 +22,7 @@
 #include <QDialog>
 #include <QSettings>
 #include <QItemDelegate>
-#include <QtGui/QKeyEvent>
+#include <QKeyEvent>
 #include "ui_searches.h"
 
 QT_BEGIN_NAMESPACE

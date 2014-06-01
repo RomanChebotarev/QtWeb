@@ -41,16 +41,22 @@
 #ifndef WEBVIEW_H
 #define WEBVIEW_H
 
+#define FTP_ENABLE  0
+
 #include <QHash>
 class QFile;
+
+#if FTP_ENABLE
 class QFtp;
+#endif
+
 class QProgressDialog;
 class QUrlInfo;
 
 #include <QDateTime>
-#include <QtWebKit/QWebView>
-#include <QtWebKit/QWebHitTestResult>
-#include <QtGui/QMouseEvent>
+#include <QWebView>
+#include <QWebHitTestResult>
+#include <QMouseEvent>
 
 
 class WebPage;
@@ -114,6 +120,7 @@ private:
     bool    m_ssl_errors_detected;
     bool    link_under_cursor;
 
+#if FTP_ENABLE
 //////////////////////////////////////////////////// AC: FTP implementation
     QFtp*  m_ftp;
     QFile* m_ftpFile;
@@ -122,6 +129,7 @@ private:
     QProgressDialog         *m_ftpProgressDialog;
     QHash<QString, bool>    m_ftpIsDirectory;
     QString                 m_ftpCurrentPath;
+#endif
 
     bool    contextMenuRequested;
 
