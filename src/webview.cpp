@@ -167,7 +167,7 @@ void WebView::copyMailAddrToClipboard()
 
 void WebView::openImageInNewWin()
 {
-        m_page->m_openAction = WebPage::OpenNewWin;
+    webPage()->m_openAction = WebPage::OpenNewWin;
     if (!m_hitResult.isNull() && !m_hitResult.imageUrl().isEmpty())
     {
         loadUrl(m_hitResult.imageUrl());
@@ -176,22 +176,22 @@ void WebView::openImageInNewWin()
 
 void WebView::openImageInNewTab()
 {
-        m_page->m_openAction = WebPage::OpenNewTab;
+    webPage()->m_openAction = WebPage::OpenNewTab;
     if (!m_hitResult.isNull() && !m_hitResult.imageUrl().isEmpty())
     {
-        m_page->mainWindow()->tabWidget()->newTab( true )->loadUrl(m_hitResult.imageUrl());
+        webPage()->mainWindow()->tabWidget()->newTab( true )->loadUrl(m_hitResult.imageUrl());
     }
 }
 
 void WebView::openLinkInNewTab()
 {
-    m_page->m_openAction = WebPage::OpenNewTab;
+    webPage()->m_openAction = WebPage::OpenNewTab;
     pageAction(QWebPage::OpenLinkInNewWindow)->trigger();
 }
 
 void WebView::openLinkInNewWin()
 {
-    m_page->m_openAction = WebPage::OpenNewWin;
+    webPage()->m_openAction = WebPage::OpenNewWin;
     pageAction(QWebPage::OpenLinkInNewWindow)->trigger();
 }
 
@@ -272,14 +272,14 @@ void WebView::loadFinishedCustom(bool ok)
             applyEncoding();
 
     
-            BrowserApplication::instance()->mainWindow()->checkDumpAction(page());
+            webPage()->mainWindow()->checkDumpAction(page());
 
         }
     }
     else
     {
         setStatusBarText(tr("Cancelled"));
-        BrowserApplication::instance()->mainWindow()->checkQuitAction();
+        webPage()->mainWindow()->checkQuitAction();
     }
 
     m_progress = 0;
@@ -358,12 +358,12 @@ QUrl WebView::url() const
 
 void WebView::mousePressEvent(QMouseEvent *event)
 {
-    m_page->m_pressedButtons = event->buttons();
+    webPage()->m_pressedButtons = event->buttons();
     if (m_font_resizing && (event->buttons() & Qt::MidButton) )
     {
-        m_page->m_pressedButtons = (Qt::MouseButtons)((int)m_page->m_pressedButtons - (int)Qt::MidButton); 
+        webPage()->m_pressedButtons = (Qt::MouseButtons)((int)webPage()->m_pressedButtons - (int)Qt::MidButton);
     }
-    m_page->m_keyboardModifiers = event->modifiers();
+    webPage()->m_keyboardModifiers = event->modifiers();
     m_font_resizing = false;
     
     // Start mouse gestures processing if needed
@@ -452,11 +452,12 @@ bool WebView::processGesture(QMouseEvent * event)
         return true;
     }
 
-    if (BrowserApplication::instance() &&
+    /*  TODO ugly code? Probably unneeded. Temporary commented.
+     *if (BrowserApplication::instance() &&
             BrowserApplication::instance()->mainWindow() &&
-            BrowserApplication::instance()->mainWindow()->tabWidget())
+            BrowserApplication::instance()->mainWindow()->tabWidget()) */
     {
-        BrowserMainWindow *mw = BrowserApplication::instance()->mainWindow();
+        BrowserMainWindow *mw = webPage()->mainWindow();
 
         if (up)
         {
@@ -480,10 +481,10 @@ bool WebView::processGesture(QMouseEvent * event)
                 return true;
             }
             else
-                if (difX > 0)
-                    down_right = true;
-                else
-                    down_left = true;
+            {
+                mw->tabWidget()->newEmptyTab();
+                return true;
+            }
         }
 
         if (upper_right)
@@ -616,7 +617,7 @@ void WebView::mouseReleaseEvent(QMouseEvent *event)
             menu.addSeparator();
 
             QAction* viewsource = new QAction(cmds.SourceTitle(), this);
-            connect(viewsource, SIGNAL(triggered()), BrowserApplication::instance()->mainWindow(), SLOT(slotViewPageSource()));
+            connect(viewsource, SIGNAL(triggered()), webPage()->mainWindow(), SLOT(slotViewPageSource())); //TODO may be problem if many main window opened
             menu.addAction(viewsource);
         }
 
@@ -627,7 +628,7 @@ void WebView::mouseReleaseEvent(QMouseEvent *event)
         }
     }
 
-    if (! link_under_cursor && (m_page->m_pressedButtons & Qt::MidButton))
+    if (! link_under_cursor && (webPage()->m_pressedButtons & Qt::MidButton))
     {
         QUrl url(QApplication::clipboard()->text(QClipboard::Selection));
         if (!url.isEmpty() && url.isValid() && !url.scheme().isEmpty()) 
@@ -638,14 +639,14 @@ void WebView::mouseReleaseEvent(QMouseEvent *event)
         }
     }
 
-    if (m_page->m_pressedButtons & Qt::XButton1)
+    if (webPage()->m_pressedButtons & Qt::XButton1)
     {
         back();
         event->accept();
         return;
     }
 
-    if (m_page->m_pressedButtons & Qt::XButton2)
+    if (webPage()->m_pressedButtons & Qt::XButton2)
     {
         forward();
         event->accept();
@@ -671,7 +672,7 @@ void WebView::wheelEvent(QWheelEvent *event)
         return;
     }
 
-    if (m_page->m_pressedButtons & Qt::MidButton && BrowserApplication::startResizeOnMouseweelClick())
+    if (webPage()->m_pressedButtons & Qt::MidButton && BrowserApplication::startResizeOnMouseweelClick())
     {
         int numDegrees = event->delta() / 8;
         int numSteps = numDegrees / 15;

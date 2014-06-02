@@ -618,6 +618,7 @@ BrowserMainWindow *BrowserApplication::newMainWindow()
 
 BrowserMainWindow *BrowserApplication::mainWindow()
 {
+    //TODO need refactoring. This function may return not active window
     clean();
     if (m_mainWindows.isEmpty())
         newMainWindow();
