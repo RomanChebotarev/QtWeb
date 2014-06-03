@@ -245,13 +245,13 @@ void BrowserApplication::definePortableRunMode()
                 if(!temp_dir.exists() && !temp_dir.mkdir(settings.organizationName()))
                 {
                     QMessageBox::warning(NULL, tr("Error"),
-                        tr("Can't make temporary directory for store settings"));
+                        tr("Can't make temporary directory for store settings: ") + settings.organizationName());
                     return;
                 }
                 if(!temp_dir.cd(settings.organizationName()))
                 {
                     QMessageBox::warning(NULL, tr("Error"),
-                       tr("Can't change working directory to temporary directory for store settings"));
+                       tr("Can't change working directory to temporary directory for store settings: ") + settings.organizationName());
                     return;
                 }
                 QString tmpSettingsName = temp_dir.absolutePath() + QDir::separator() + settings.applicationName() + ".ini";

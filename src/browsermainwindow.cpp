@@ -214,6 +214,8 @@ BrowserMainWindow::BrowserMainWindow(QWidget *parent, Qt::WindowFlags flags)
     connect(findWidget, SIGNAL(escapePressed()), this, SLOT(slotShowWindow()));
 
     m_toolbarSearch->installEventFilter(this);
+
+    m_tabWidget->currentLineEdit()->setFocus(); // TODO Dirty hack for set focus in address bar in new window. Need to fix in future
 }
 
 void BrowserMainWindow::setupTabBar()
@@ -2115,7 +2117,7 @@ void BrowserMainWindow::slotSwapFocus()
 
 void BrowserMainWindow::loadPage(const QString &page)
 {
-    if (!currentTab() || page.isEmpty()) 
+    if (!currentTab() || page.isEmpty())
         return;
 
     // Check for Tags for Bookmarks

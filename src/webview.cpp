@@ -416,16 +416,16 @@ bool WebView::processGesture(QMouseEvent * event)
     bool left(false), right(false), upper_left(false), upper_right(false),
          down_left(false), down_right(false), down(false), up(false);
 
-    if (difX < 0 && (abs(difX / difY) >= 2))
+    if (difX < 0 && (difY && abs(difX / difY) >= 2))    //WARN: expression 'dif{Y,X} && ...' exist to avoid division by zero
         left = true;
     else
-    if (difX > 0 && (abs(difX / difY) >= 2))
+    if (difX > 0 && (difY && abs(difX / difY) >= 2))
         right = true;
     else
-    if (difY < 0 && (abs(difY / difX) >= 2))
+    if (difY < 0 && (difX && abs(difY / difX) >= 2))
         up = true;
     else
-    if (difY > 0 && ( abs(difY / difX) >= 2))
+    if (difY > 0 && (difX && abs(difY / difX) >= 2))
         down = true;
     else
     if (difX < 0 && difY < 0 && abs(difX / difY) < 2 && abs((float)difX / (float)difY) > 0.5)

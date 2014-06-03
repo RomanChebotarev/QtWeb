@@ -316,8 +316,9 @@ WebView *TabWidget::webView(int index) const
     if (WebView *webView = qobject_cast<WebView*>(widget)) {
         return webView;
     } else {
+#if 0   //TODO need to understand this code in future... This code causes problem: newTab() called twice when new browser window opened.
         // optimization to delay creating the first webview
-        if (count() == 1) 
+        if (count() == 1)
         {
             /*TabWidget *that = const_cast<TabWidget*>(this);
             that->setUpdatesEnabled(false);
@@ -344,6 +345,7 @@ WebView *TabWidget::webView(int index) const
             that->setUpdatesEnabled(true);
             return currentWebView();
         }
+#endif
     }
     return 0;
 }
@@ -380,6 +382,8 @@ WebView *TabWidget::newTab(bool makeCurrent, bool empty)
     m_lineEdits->addWidget(urlLineEdit);
     m_lineEdits->setSizePolicy(lineEdit->sizePolicy());
 
+
+#if 0   //TODO need to understand this code in future... This code causes problem: newTab() called twice when new browser window opened.
     // optimization to delay creating the more expensive WebView, history, etc
     if (count() == 0) {
         QWidget *emptyWidget = new QWidget;
@@ -394,6 +398,7 @@ WebView *TabWidget::newTab(bool makeCurrent, bool empty)
             this, SLOT(currentChanged(int)));
         return 0;
     }
+#endif
 
     // webview
     WebView *webView = new WebView;
