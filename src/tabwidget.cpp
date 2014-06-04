@@ -145,15 +145,30 @@ TabWidget::TabWidget(BrowserMainWindow *parent)
     m_tabBar->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
 
     // corner buttons
-    QToolButton *addTabButton = new QToolButton(this);
-    addTabButton->setDefaultAction(m_newTabAction);
-    addTabButton->setAutoRaise(true);
-    addTabButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
-    setCornerWidget(addTabButton, Qt::TopLeftCorner);   //TODO Need confirurable
+    settings.beginGroup(QLatin1String("MainWindow"));
+    bool showNTB = settings.value(QLatin1String("ShowNewTabButton"), true).toBool();
+    showNewTabButton(showNTB);
+    settings.endGroup();
 
     connect(this, SIGNAL(currentChanged(int)), this, SLOT(currentChanged(int)));
 
     m_lineEdits = new QStackedWidget(this);
+}
+
+void TabWidget::showNewTabButton(bool show)
+{
+    QToolButton *addTabButton;
+    if(show)
+    {
+        addTabButton = new QToolButton(this);
+        addTabButton->setDefaultAction(m_newTabAction);
+        addTabButton->setAutoRaise(true);
+        addTabButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
+        addTabButton->show();
+        setCornerWidget(addTabButton, Qt::TopLeftCorner);
+    }
+    else
+        setCornerWidget( 0, Qt::TopLeftCorner);
 }
 
 void TabWidget::openLastTab()

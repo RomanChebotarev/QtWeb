@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>834</width>
-    <height>468</height>
+    <width>815</width>
+    <height>462</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,6 +20,9 @@
    <string>Settings</string>
   </property>
   <layout class="QGridLayout">
+   <property name="margin">
+    <number>5</number>
+   </property>
    <item row="4" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
@@ -39,19 +42,35 @@
       <attribute name="title">
        <string>General</string>
       </attribute>
-      <layout class="QGridLayout">
-       <item row="11" column="1" colspan="2">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+      <layout class="QGridLayout" name="commonSettingsGridLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_17">
+         <property name="text">
+          <string>When QtWeb starts:</string>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>391</width>
-           <height>262</height>
-          </size>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
-        </spacer>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="startupAction">
+         <item>
+          <property name="text">
+           <string>Show my home page</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Show a blank page</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Show my windows and tabs from last session</string>
+          </property>
+         </item>
+        </widget>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_3">
@@ -63,14 +82,54 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="1" colspan="2">
+       <item row="1" column="1">
         <widget class="QLineEdit" name="homeLineEdit"/>
        </item>
        <item row="2" column="1">
-        <widget class="QPushButton" name="setHomeToCurrentPageButton">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QPushButton" name="setHomeToCurrentPageButton">
+           <property name="text">
+            <string>Set to current page</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="restoreToDefaultButton">
+           <property name="text">
+            <string>Restore to &amp;Default</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_18">
          <property name="text">
-          <string>Set to current page</string>
+          <string>New Tab Action:</string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="newTabAction">
+         <item>
+          <property name="text">
+           <string>Welcome page</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Home page</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Blank page</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item row="4" column="0">
@@ -83,7 +142,7 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="1" colspan="2">
+       <item row="4" column="1">
         <widget class="QComboBox" name="expireHistory">
          <item>
           <property name="text">
@@ -117,9 +176,6 @@
          </item>
         </widget>
        </item>
-       <item row="5" column="1" colspan="2">
-        <widget class="QLineEdit" name="downloadsLocation"/>
-       </item>
        <item row="5" column="0">
         <widget class="QLabel" name="label_7">
          <property name="text">
@@ -130,51 +186,8 @@
          </property>
         </widget>
        </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="label_16">
-         <property name="text">
-          <string>Links to Audio/Video content:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1" colspan="2">
-        <widget class="QComboBox" name="startupAction">
-         <item>
-          <property name="text">
-           <string>Show my home page</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Show a blank page</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Show my windows and tabs from last session</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_17">
-         <property name="text">
-          <string>When QtWeb starts:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QPushButton" name="restoreToDefaultButton">
-         <property name="text">
-          <string>Restore to &amp;Default</string>
-         </property>
-        </widget>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="downloadsLocation"/>
        </item>
        <item row="6" column="1">
         <widget class="QCheckBox" name="checkBoxAsk">
@@ -183,74 +196,17 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_18">
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_8">
          <property name="text">
-          <string>New Tab Action:</string>
+          <string>Open links:</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
-       <item row="3" column="1" colspan="2">
-        <widget class="QComboBox" name="newTabAction">
-         <item>
-          <property name="text">
-           <string>Welcome page</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Home page</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Blank page</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="8" column="1" colspan="2">
-        <widget class="QComboBox" name="comboBoxAV">
-         <item>
-          <property name="text">
-           <string>Open and Play with an external application, like Media Player or QuickTime</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Do not launch an external application, just download and store to Downloads</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="10" column="1" colspan="2">
-        <widget class="QComboBox" name="mouseweelClick">
-         <item>
-          <property name="text">
-           <string>Not assigned</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Start webpage font resizing using the weel</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="10" column="0">
-        <widget class="QLabel" name="label_19">
-         <property name="text">
-          <string>Mouseweel click default action:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1" colspan="2">
+       <item row="7" column="1">
         <widget class="QComboBox" name="openLinksIn">
          <item>
           <property name="text">
@@ -264,166 +220,10 @@
          </item>
         </widget>
        </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="label_8">
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_16">
          <property name="text">
-          <string>Open links:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tab_3">
-      <attribute name="title">
-       <string>Appearance</string>
-      </attribute>
-      <layout class="QGridLayout">
-       <item row="1" column="2">
-        <widget class="QPushButton" name="standardFontButton">
-         <property name="text">
-          <string>Select...</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Standard font:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QComboBox" name="comboBoxStyle">
-         <property name="sizeAdjustPolicy">
-          <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QPushButton" name="fixedFontButton">
-         <property name="text">
-          <string>Select...</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_14">
-         <property name="text">
-          <string>Main Menu:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QComboBox" name="comboMainMenu">
-         <item>
-          <property name="text">
-           <string>Display the Menu Bar and Menu Icons</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Display the Menu Bar, but hide Menu Icons (re-start is required when changed)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Hide the Menu Bar (functionality can be accessed via Shortcuts)</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="comboLangs">
-         <item>
-          <property name="text">
-           <string>English (en_US)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Chinese Traditional (zh_tw)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Chinese Simplified (zh_cn)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Czech (cz)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Farsi (fa)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>French (fr)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>German (de)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Hungarian (hu)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Italian (it)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Japanese (ja)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Russian (ru_RU)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Spanish (es)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Swedish (sv)</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_22">
-         <property name="text">
-          <string>Language:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_15">
-         <property name="text">
-          <string>Application Style:</string>
+          <string>Links to Audio/Video content:</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -431,580 +231,842 @@
         </widget>
        </item>
        <item row="8" column="1">
-        <widget class="QGroupBox" name="groupBox_4">
-         <property name="title">
-          <string>Show/Hide toolbar buttons</string>
-         </property>
-         <widget class="QToolButton" name="tbGoBack">
-          <property name="geometry">
-           <rect>
-            <x>50</x>
-            <y>30</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Back</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://arrow_left_green.png</normaloff>://arrow_left_green.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbGoForward">
-          <property name="geometry">
-           <rect>
-            <x>90</x>
-            <y>30</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Forward</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://arrow_right_green.png</normaloff>://arrow_right_green.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbAddBook">
-          <property name="geometry">
-           <rect>
-            <x>170</x>
-            <y>30</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Add Bookmark</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://add2.png</normaloff>://add2.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbHome">
-          <property name="geometry">
-           <rect>
-            <x>130</x>
-            <y>30</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Home</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://house.png</normaloff>://house.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbRefresh">
-          <property name="geometry">
-           <rect>
-            <x>250</x>
-            <y>30</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Refresh / Go</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://nav_refresh_green.png</normaloff>://nav_refresh_green.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbAppStyle">
-          <property name="geometry">
-           <rect>
-            <x>90</x>
-            <y>70</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Application Style</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://app_style.png</normaloff>://app_style.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbPrivMode">
-          <property name="geometry">
-           <rect>
-            <x>130</x>
-            <y>70</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Privacy Mode</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://spy.png</normaloff>://spy.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbReset">
-          <property name="geometry">
-           <rect>
-            <x>330</x>
-            <y>70</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Reset QtWeb</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://delete.png</normaloff>://delete.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbImages">
-          <property name="geometry">
-           <rect>
-            <x>290</x>
-            <y>70</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Images On/Off</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://images.png</normaloff>://images.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbPrefs">
-          <property name="geometry">
-           <rect>
-            <x>170</x>
-            <y>70</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Preferences</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://settings.png</normaloff>://settings.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbProxy">
-          <property name="geometry">
-           <rect>
-            <x>250</x>
-            <y>70</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Proxy On/Off</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://proxy.png</normaloff>://proxy.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbCompatibility">
-          <property name="geometry">
-           <rect>
-            <x>50</x>
-            <y>70</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Compatibility</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://logo.png</normaloff>://logo.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbTextSize">
-          <property name="geometry">
-           <rect>
-            <x>330</x>
-            <y>30</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Change Text Size</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://textsize.png</normaloff>://textsize.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbBookmarks">
-          <property name="geometry">
-           <rect>
-            <x>210</x>
-            <y>30</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Show All Bookmarks</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://bookmarks.png</normaloff>://bookmarks.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbInspect">
-          <property name="geometry">
-           <rect>
-            <x>210</x>
-            <y>70</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Inspect Element</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://inspect.png</normaloff>://inspect.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbVirtKeyb">
-          <property name="geometry">
-           <rect>
-            <x>290</x>
-            <y>30</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>Virtual Keyboard</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>://keyboard.png</normaloff>://keyboard.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
-         <widget class="QToolButton" name="tbJavaScript">
-          <property name="geometry">
-           <rect>
-            <x>370</x>
-            <y>30</y>
-            <width>31</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Disable JavaScript&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="icon">
-           <iconset resource="data/data.qrc">
-            <normaloff>:/javascript.png</normaloff>:/javascript.png</iconset>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextBesideIcon</enum>
-          </property>
-         </widget>
+        <widget class="QComboBox" name="comboBoxAV">
+         <item>
+          <property name="text">
+           <string>Open and Play with an external application, like Media Player or QuickTime</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Do not launch an external application, just download and store to Downloads</string>
+          </property>
+         </item>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="fixedLabel">
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_19">
          <property name="text">
-          <string>Courier 13</string>
+          <string>Mouseweel click default action:</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>Fixed-width font:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="standardLabel">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="text">
-          <string>Times 16</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QComboBox" name="cbToolbarSize">
-         <property name="maximumSize">
-          <size>
-           <width>80</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="currentIndex">
-          <number>5</number>
-         </property>
-         <item>
-          <property name="text">
-           <string>50%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>60%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>80%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>90%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>100%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>110%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>120%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>130%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>140%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>150%</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_23">
-         <property name="text">
-          <string>Toolbar size:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
        <item row="9" column="1">
-        <widget class="QCheckBox" name="cbShowOneTab">
-         <property name="text">
-          <string>Show tabbar when only one tab opened</string>
-         </property>
+        <widget class="QComboBox" name="mouseweelClick">
+         <item>
+          <property name="text">
+           <string>Not assigned</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Start webpage font resizing using the weel</string>
+          </property>
+         </item>
         </widget>
+       </item>
+       <item row="10" column="1">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>391</width>
+           <height>262</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Appearance</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QGridLayout" name="apperanceGridLayout">
+         <item row="5" column="1">
+          <widget class="QComboBox" name="cbToolbarSize">
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="currentIndex">
+            <number>5</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>50%</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>60%</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>70%</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>80%</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>90%</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>100%</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>110%</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>120%</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>130%</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>140%</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>150%</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QComboBox" name="comboBoxStyle">
+           <property name="sizeAdjustPolicy">
+            <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QLabel" name="standardLabel">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="text">
+              <string>Times 16</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="standardFontButton">
+             <property name="text">
+              <string>Select...</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="comboLangs">
+           <item>
+            <property name="text">
+             <string>English (en_US)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Chinese Traditional (zh_tw)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Chinese Simplified (zh_cn)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Czech (cz)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Farsi (fa)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>French (fr)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>German (de)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Hungarian (hu)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Italian (it)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Japanese (ja)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Russian (ru_RU)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Spanish (es)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Swedish (sv)</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QComboBox" name="comboMainMenu">
+           <item>
+            <property name="text">
+             <string>Display the Menu Bar and Menu Icons</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Display the Menu Bar, but hide Menu Icons (re-start is required when changed)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Hide the Menu Bar (functionality can be accessed via Shortcuts)</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Fixed-width font:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Standard font:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="0">
+          <widget class="QLabel" name="label_24">
+           <property name="text">
+            <string>Toolbar buttons:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_23">
+           <property name="text">
+            <string>Toolbar size:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QLabel" name="fixedLabel">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="text">
+              <string>Courier 13</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="fixedFontButton">
+             <property name="text">
+              <string>Select...</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_15">
+           <property name="text">
+            <string>Application Style:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_22">
+           <property name="text">
+            <string>Language:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QToolButton" name="tbGoBack">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Back</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://arrow_left_green.png</normaloff>://arrow_left_green.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbGoForward">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Forward</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://arrow_right_green.png</normaloff>://arrow_right_green.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbHome">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Home</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://house.png</normaloff>://house.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbAddBook">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Add Bookmark</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://add2.png</normaloff>://add2.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbBookmarks">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Show All Bookmarks</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://bookmarks.png</normaloff>://bookmarks.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbRefresh">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Refresh / Go</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://nav_refresh_green.png</normaloff>://nav_refresh_green.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbVirtKeyb">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Virtual Keyboard</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://keyboard.png</normaloff>://keyboard.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbTextSize">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Change Text Size</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://textsize.png</normaloff>://textsize.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbJavaScript">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Disable JavaScript&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="icon">
+              <iconset resource="data/data.qrc">
+               <normaloff>:/javascript.png</normaloff>:/javascript.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbCompatibility">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Compatibility</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://logo.png</normaloff>://logo.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbAppStyle">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Application Style</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://app_style.png</normaloff>://app_style.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbPrivMode">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Privacy Mode</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://spy.png</normaloff>://spy.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbPrefs">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Preferences</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://settings.png</normaloff>://settings.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbInspect">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Inspect Element</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://inspect.png</normaloff>://inspect.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbProxy">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Proxy On/Off</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://proxy.png</normaloff>://proxy.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbImages">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Images On/Off</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://images.png</normaloff>://images.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="tbReset">
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Reset QtWeb</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>://delete.png</normaloff>://delete.png</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_14">
+           <property name="text">
+            <string>Main Menu:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QCheckBox" name="cbShowNewTabButton">
+           <property name="text">
+            <string>Show &quot;New tab&quot; button on tab bar</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QCheckBox" name="cbShowOneTab">
+           <property name="text">
+            <string>Show tabbar when only one tab opened</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -1954,23 +2016,6 @@
   <tabstop>standardFontButton</tabstop>
   <tabstop>fixedFontButton</tabstop>
   <tabstop>comboBoxStyle</tabstop>
-  <tabstop>comboMainMenu</tabstop>
-  <tabstop>tbGoBack</tabstop>
-  <tabstop>tbGoForward</tabstop>
-  <tabstop>tbHome</tabstop>
-  <tabstop>tbBookmarks</tabstop>
-  <tabstop>tbAddBook</tabstop>
-  <tabstop>tbRefresh</tabstop>
-  <tabstop>tbVirtKeyb</tabstop>
-  <tabstop>tbTextSize</tabstop>
-  <tabstop>tbCompatibility</tabstop>
-  <tabstop>tbAppStyle</tabstop>
-  <tabstop>tbPrivMode</tabstop>
-  <tabstop>tbPrefs</tabstop>
-  <tabstop>tbInspect</tabstop>
-  <tabstop>tbProxy</tabstop>
-  <tabstop>tbImages</tabstop>
-  <tabstop>tbReset</tabstop>
   <tabstop>enableJavascript</tabstop>
   <tabstop>autoLoadImages</tabstop>
   <tabstop>blockPopups</tabstop>

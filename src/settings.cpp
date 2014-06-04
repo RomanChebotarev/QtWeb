@@ -113,6 +113,14 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     connect(tbVirtKeyb, SIGNAL(clicked()), this, SLOT( checkAddressBarButtons() ));
     connect(tbJavaScript, SIGNAL(clicked()), this, SLOT( checkAddressBarButtons() ));
 
+    BrowserMainWindow *mw;
+    for(int i = 0; i < BrowserApplication::instance()->mainWindows().count(); ++i)
+    {
+        mw = BrowserApplication::instance()->mainWindows()[i];
+        connect(cbShowNewTabButton, SIGNAL(toggled(bool)), mw->tabWidget(), SLOT(showNewTabButton(bool)));
+    }
+
+
     twSettings->setCurrentIndex(0);
     connect(cbToolbarSize, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(toolbarSizeChanged(const QString &)));
 }
@@ -120,7 +128,8 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 void SettingsDialog::toolbarSizeChanged(const QString &text)
 {
     int pc = QString(text).remove("%").toInt();
-    BrowserApplication::instance()->mainWindow()->setToolbarSizes(pc);
+    for(int i = 0; i < BrowserApplication::instance()->mainWindows().count(); ++i)
+        BrowserApplication::instance()->mainWindows()[i]->setToolbarSizes(pc);
 }
 
 extern QString DefaultDownloadPath(bool create);    //TODO WTF???
@@ -268,6 +277,7 @@ void SettingsDialog::loadFromSettings()
             cbToolbarSize->setCurrentIndex(index);
     }
     cbShowOneTab->setChecked(settings.value(QLatin1String("ShowTabbarWhenOneTab"), false).toBool());
+    cbShowNewTabButton->setChecked(settings.value(QLatin1String("ShowNewTabButton"), true).toBool());
 
     settings.endGroup();
 
@@ -486,6 +496,7 @@ void SettingsDialog::saveToSettings()
 
     settings.setValue(QLatin1String("ToolbarSize"), cbToolbarSize->currentText());
     settings.setValue(QLatin1String("ShowTabbarWhenOneTab"), cbShowOneTab->isChecked());
+    settings.setValue(QLatin1String("ShowNewTabButton"), cbShowNewTabButton->isChecked());
 
     settings.endGroup();
 
@@ -773,7 +784,15 @@ void SettingsDialog::reject()
     }
 
     if (BrowserApplication::instance()->mainWindow()->toolbarSizes() != cbToolbarSize->currentText().remove("%").toInt())
-        BrowserApplication::instance()->mainWindow()->setToolbarSizes();
+    {
+        for(int i = 0; i < BrowserApplication::instance()->mainWindows().count(); ++i)
+            BrowserApplication::instance()->mainWindows()[i]->setToolbarSizes();
+    }
+
+    QSettings settings;
+    settings.beginGroup(QLatin1String("MainWindow"));
+    cbShowNewTabButton->setChecked(settings.value(QLatin1String("ShowNewTabButton"), true).toBool());
+    settings.endGroup();
 
     QDialog::reject();
 }

@@ -46,6 +46,8 @@
 
 #include <QtCore/QUrl>
 #include <QtGui/QTabWidget>
+#include <QToolButton>
+
 QT_BEGIN_NAMESPACE
 class QLineEdit;
 class QMenu;
@@ -127,6 +129,7 @@ public slots:
     void nextTab();
     void previousTab();
     void openLastTab();
+    void showNewTabButton(bool show);
 
 private slots:
     void currentChanged(int index);
