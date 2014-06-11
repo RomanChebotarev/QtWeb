@@ -310,6 +310,7 @@ void SettingsDialog::loadFromSettings()
 
     settings.beginGroup(QLatin1String("general"));
     openLinksIn->setCurrentIndex(settings.value(QLatin1String("openLinksIn"), openLinksIn->currentIndex()).toInt());
+    cbNewTabPosition->setCurrentIndex(settings.value(QLatin1String("newTabPosition"), OPEN_TAB_AFTER_CURRENT).toInt());
 
     bool bEnableInspector = settings.value(QLatin1String("EnableWebInspector"), false).toBool();
     QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, bEnableInspector);
@@ -502,6 +503,7 @@ void SettingsDialog::saveToSettings()
 
     settings.beginGroup(QLatin1String("general"));
     settings.setValue(QLatin1String("openLinksIn"), openLinksIn->currentIndex());
+    settings.setValue(QLatin1String("newTabPosition"), cbNewTabPosition->currentIndex());
     switch(comboMainMenu->currentIndex())
     {
         case 1:

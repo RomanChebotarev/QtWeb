@@ -47,6 +47,7 @@
 #include "webview.h"
 #include "webpage.h"
 #include "commands.h"
+#include "settings.h"
 
 #include <QtGui/QClipboard>
 #include <QtGui/QCompleter>
@@ -394,9 +395,17 @@ WebView *TabWidget::newTab(bool makeCurrent, bool empty)
     }
     lineEdit->setCompleter(lineEditCompleter);
     connect(lineEdit, SIGNAL(returnPressed()), this, SLOT(lineEditReturnPressed()));
-    m_lineEdits->addWidget(urlLineEdit);
-    m_lineEdits->setSizePolicy(lineEdit->sizePolicy());
 
+    // Generate new tab/lineEdit index
+    int newTabIndex = 0;
+    {
+        QSettings settings;
+        settings.beginGroup(QLatin1String("general"));
+        int tabPos = settings.value(QLatin1String("newTabPosition"), SettingsDialog::OPEN_TAB_AFTER_CURRENT).toInt();
+        newTabIndex = tabPos == SettingsDialog::OPEN_TAB_AFTER_CURRENT ?  currentIndex() + 1 : count();
+    }
+    m_lineEdits->insertWidget(newTabIndex, urlLineEdit);
+    m_lineEdits->setSizePolicy(lineEdit->sizePolicy());
 
 #if 0   //TODO need to understand this code in future... This code causes problem: newTab() called twice when new browser window opened.
     // optimization to delay creating the more expensive WebView, history, etc
@@ -450,7 +459,7 @@ WebView *TabWidget::newTab(bool makeCurrent, bool empty)
             this, SIGNAL(toolBarVisibilityChangeRequested(bool)));
     connect(urlLineEdit, SIGNAL(escapePressed()), webView, SLOT(setFocus()));
 
-    addTab(webView, tr("about:blank"));
+    insertTab(newTabIndex, webView, tr("about:blank"));
 
     if (makeCurrent)
         setCurrentWidget(webView);

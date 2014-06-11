@@ -36,13 +36,23 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="twSettings">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
        <string>General</string>
       </attribute>
       <layout class="QGridLayout" name="commonSettingsGridLayout">
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_16">
+         <property name="text">
+          <string>Links to Audio/Video content:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_17">
          <property name="text">
@@ -142,6 +152,9 @@
          </property>
         </widget>
        </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="downloadsLocation"/>
+       </item>
        <item row="4" column="1">
         <widget class="QComboBox" name="expireHistory">
          <item>
@@ -186,9 +199,6 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="downloadsLocation"/>
-       </item>
        <item row="6" column="1">
         <widget class="QCheckBox" name="checkBoxAsk">
          <property name="text">
@@ -220,17 +230,7 @@
          </item>
         </widget>
        </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="label_16">
-         <property name="text">
-          <string>Links to Audio/Video content:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1">
+       <item row="9" column="1">
         <widget class="QComboBox" name="comboBoxAV">
          <item>
           <property name="text">
@@ -244,7 +244,7 @@
          </item>
         </widget>
        </item>
-       <item row="9" column="0">
+       <item row="10" column="0">
         <widget class="QLabel" name="label_19">
          <property name="text">
           <string>Mouseweel click default action:</string>
@@ -254,7 +254,7 @@
          </property>
         </widget>
        </item>
-       <item row="9" column="1">
+       <item row="10" column="1">
         <widget class="QComboBox" name="mouseweelClick">
          <item>
           <property name="text">
@@ -268,7 +268,7 @@
          </item>
         </widget>
        </item>
-       <item row="10" column="1">
+       <item row="12" column="1">
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -280,6 +280,30 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="8" column="1">
+        <widget class="QComboBox" name="cbNewTabPosition">
+         <item>
+          <property name="text">
+           <string>After current tab</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>After last tab</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_25">
+         <property name="text">
+          <string>New tab position:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -507,6 +531,9 @@
           <widget class="QLabel" name="label_24">
            <property name="text">
             <string>Toolbar buttons:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>

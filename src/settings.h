@@ -52,6 +52,12 @@ public:
     SettingsDialog(QWidget *parent = 0);
     void accept();
     void reject();
+    enum {
+        OPEN_TAB_AFTER_CURRENT,
+        OPEN_TAB_AFTER_LAST
+    } SDnewTabPos;
+
+
 
 private slots:
     void loadDefaults();
